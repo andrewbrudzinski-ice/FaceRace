@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FaceRace">
+<meta name="application-name" content="FaceRace">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiRmFjZVJhY2UiLCJzaG9ydF9uYW1lIjoiRmFjZVJhY2UiLCJkZXNjcmlwdGlvbiI6IlBob3RvLWZpbmlzaCByYWNpbmcgZm9yIGdyb3VwcyBvZiBmcmllbmRzIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImJhY2tncm91bmRfY29sb3IiOiIjMGIwZTFhIiwidGhlbWVfY29sb3IiOiIjMGIwZTFhIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBZ0FBQUFJQUNBWUFBQUQwZU5UNkFBQVZxa2xFUVZSNG5PM2RTNUlreDNVRjBNaTJtc2tBTk5pQUJoZ0lwRXdrTk5BYXdEMWhJZHdUdVFwSlp2cHd3Z2tnZ01BR1NvTm1zYXNqS3l2ajQ1L24vczR4d3dRR2xJVmxldnE5OFR5eTZ2SVBuMzYxRU5Kajd3c0FLT1RTK3dLNDl0RDdBaElUOEVBVzkvWTdCYUVEQmFBTllROXcyMHQ3cEZKUW1RSlFoOEFIT0dlOWp5b0VoU2tBWlFoOGdMb1Vnc0lVZ09PRVBrQS96L2RnWmVBQUJXQWZvUThRanpKd2dBSnduOUFIR0ljeXNKRUNjSnZnQnhqYjB6NnVDTHhBQWZpWTBBZVlqNm5BQ3hTQTl3US9RQTZtQW4rVHZRQUlmb0NjMGhlQnJBVkE4QU93TEltTFFMWUNJUGdCZUVtNklwQ2xBQWgrQUxaSVV3VGU5TDZBQm9RL0FIdE5ueDB6VHdDbWYvTUFxR3JxYWNDTUJVRHdBMURTbEVWZ3RpTUE0UTlBTFZObHpDd1RnS25lRkFEQ21tWWFNTU1FUVBnRDBOcncyVE42QVJqK0RRQmdXRU5uMEtoSEFFTy82QUJNWTlnamdSRW5BTUlmZ0dpR3k2YlJDc0J3THpBQWFReVZVYU1jQVF6MW9nS1ExakJIQWc4RFhLUHdCMkEwajB2d2dJMStCQ0Q4QVJoVjZBeUxYQUJDdjNBQXNFSFlMSXRhQU1LK1lBQ3dVOGhNaTFnQVFyNVFBSEJDdUd5TFZnREN2VUFBVUVpb2pJdFVBRUs5TUFCUVFaaXNpMUlBd3J3Z0FGQlppTXlMVUFCQ3ZCQUEwRkQzN090ZEFMcS9BQURRU2RjTTdGa0FoRDhBMlhYTHdsNEZRUGdEd0h0ZE1yRkhBUkQrQVBDeDV0bll1Z0FJZndCNFdkT01iRmtBaEQ4QXZLNVpWcllxQU1JZkFMWnBrcG05dndZSUFIVFFvZ0M0K3dlQWZhcG5aKzBDSVB3QjRKaXFHVnF6QUFoL0FEaW5XcFo2QmdBQUVxcFZBTno5QTBBWlZUSzFSZ0VRL2dCUVZ2RnNMVjBBaEQ4QTFGRTBZejBEQUFBSmxTd0E3djRCb0s1aVdmdXdMSmNTUDBmNEEwQWJqMHVCOEhZRUFBQUpsU2dBN3Y0Qm9LM1QyV3NDQUFBSm5TMEE3djRCb0k5VEdmeHc0akVDNFE4QWZSMStJTkFSQUFBa2RMUUF1UHNIZ0JnT1piSUpBQUFrZEtRQXVQc0hnRmgyWjdNSkFBQWt0TGNBdVBzSGdKaDJaZlJEa2I4RUFBQU1aYzhFd04wL0FNUzJPYXM5QXdBQUNXMHRBTzcrQVdBTW16TGJCQUFBRWxJQUFDQ2hMUVhBK0I4QXhuSTN1MDBBQUNDaGV3WEEzVDhBak9uVkREY0JBSUNFRkFBQVNPaTFBbUQ4RHdCanU1bmxKZ0FBa05ERHN2aHpRQUNRemEwSmdQRS9BTXpoeFV4M0JBQUFDU2tBQUpEUVN3WEErQjhBNW5LVjdTWUFBSkNRQWdBQUNTa0FBSkRRdWdBNC93ZUFPWDJVOFNZQUFKQ1FBZ0FBQ1NrQUFKRFE4d0xnL0I4QTV2YjNyRGNCQUlDRUZBQUFTRWdCQUlDRUZBQUFTT2lwQUhnQUVBQnllRndXRXdBQVNFa0JBSUNFRkFBQVNFZ0JBSUNFRkFBQVNFZ0JBSUNFRkFBQVNPak40bmNBQUVBMmp3L0xjdWw5RVFCQVk0NEFBQ0FoQlFBQUVsSUFBQ0FoQlFBQUVsSUFBQ0FoQlFBQUVsSUFBQ0FoQlFBQUVsSUFBQ0FoQlFBQUVucndtNEFCSUI4VEFBQklTQUVBZ0lRVUFBQklTQUVBZ0lRVUFBQklTQUVBZ0lRVUFBQklTQUVBZ0lRVUFBQklTQUVBZ0lRVUFBQklTQUVBZ0lRVUFBQkk2T0hpendFQ1FEb21BQUNRa0FJQUFBa3BBQUNRa0FJQUFBazk5TDRBS09XWG4vNjMrTS84OVBOZkYvK1p0R05Od0cyWFQ5NSsvZGo3SW1DckdodjZVWUlnQm1zQ2psRUFDQ3ZTeHI2VkFLakxtb0J5RkFEQ0dIRnp2OGZtZjQ0MUFmVW9BSFExNHdaL2k0MS9HMnNDMmxBQWFDclQ1bjZQemY4OWErSURhNEtXRkFDYXNNbmZsblhUdHladXk3b21hRXNCb0JvYi9INnpiL3pXeEg2enJ3bjZVUUFvemlaLzNteWJ2alZ4M214cmd2NFVBSXFKc01sZi92TEhZai9yOGF2ZkYvdFpSNDIrNlVkWUU4dTMzNVg3V1gvNlE3bWZkZERvYTRJNEZBQk82YkhCbHd6NW8zcVVnMUUyL2k2aFh6TGtqK3BRRGtaWkU4U2tBSEJJcTAwK1F0aHYxYW9VUk4zMG13Vi9oTERmcWxFcGlMb21pRTBCWUxlYUcvMUlnWDlQelVJUWJjT3ZHdjRqQmY0OUZRdEJ0RFZCZkFvQW05WGE1R2NLL1Z0cWxZSGVtMzYxNEo4cDlHK3BWQVo2cnduR29RQndWNDFOUGtQbzMxS2pETFRlOUtzRWY0YlF2NlZDR1ZBRXVFY0I0S2JTbTN6bTBMK2xkQm1vdmVrWEQvN01vWDlMNFRLZ0NIREw1Zkh4VVFIWUtjTUhxdVJHTC9qdksxa0VhcTNQb3VFditPOHJXQVF5N0Zuc3B3QWNNUE9IcWRRbUwvU1BLMVVHU3EzVFlzRXY5SThyVkFabTNydllUd0U0WU5ZUFVZbU5YdkNYVTZJSW5GMnJSY0pmOEpkVG9Bak11bit4bndKd3dJd2ZvTE1idmVDdjUyd1JPTHBlVDRlLzRLL25aQkdZY1E5alB3WGdnSmsrUElKL0hLMktnT0FmaUNMQUNRckFBWjkrL3B2ZWwxREVMei85ejZuL1gvaTNkNzRFdkw1Mno2NEo0ZC9CNlJJd3gzN0dmZ3JBQVROOFlNNXM5SUsvdnpORjROYjZQUlgrZ3IrL0UwVmdoajJOL1JTQUEwYitzQWordVpRb0FvSi9Nb29BR3lrQUI0ejZJUkgrYytyMlo0dUZmMXhLQUJzb0FBZU0rQUU1R3Y2Q2Z4ek5pb0RnSDhmQklqRGlIc2QrbDAvZS9sb0JtSnp3ejZONkNSRCs0MUVDdU9GTjd3dWdMdUdmUzlYM1RmaVA2ZUQ3ZHZvYklZUm5BakN4SXg5Z3dUK1BZdE1Bd1QrUEE5TUFrNEI1bVFCTVN2aFQ1UDBVL25NNThINmFCTXhMQVppUThPZkpxZmRWK005SkNlQnZIQUZNWnU4SFZmRFBiL2RSZ09EUFkrZVJnT09BdVpnQVRFVDRzeWI4ZWRYTzk5c2tZQzRLd0NTRVAydkNuMDJVZ0xRVWdBa0lmOWFFUDdzb0FTa3BBSU1UL3F3SmZ3NVJBdEpSQUFZbS9Ga1QvcHlpQktTaUFBeEsrTE1tL0NsQ0NVampZYm4wdmdScUUvNWNFZjY4NXR2djluMUZVSTRNeVFSZ1FMLzh1TDF4Qy84Y2R0MzlDMysyMkxGTzl1eEp4S0VBREViNHN5YjhxVVlKbUpvQ01CRGh6NXJ3cHpvbFlGb0tBQUFrcEFBTXd0MC9hKzcrYWNZVVlFb0t3QUNFUDJ2Q24rYVVnT2tvQU1FSmY5YUVQOTBvQVZOUkFBQWdvY3Nubi8vbXNmZEY4TEpmZnZ6dnpmK3R1LzhjM1AwVHdvNWZFdlRwci82NTRvVndoZ2xBVU1LZk5lRlBHTHVPQXJidlpiU2xBQXhPK0hORitOT0NkVFk4QlNBZ2pabTEzWC9vQndLeHA4V2tBQXpNM1Q5WDNKWFJrdlUyTkFVZ21LMU5XZmpuc2ZudTMyWk1EeHZYblNsQVBBb0FBQ1NrQUFUaTdwODFkLzhNd1JSZ1NBcEFFRDRZckhud2p4blo2K0pRQUFiajdwOHI3djZKd0RvY2pnSVFnTkUvYTBiL0RNbFJ3RkFVQUFCSTZPSFMrd3JZeE4wL1Y5ejlFOUczMzIzNld3R3lwejhUZ001K05ncGp4Y04vWkdEdjYwOEJHSUM3ZjY2NCt5Y3k2M01JQ2tCSEdqQnI3djdKeEI3WWx3SVFuTHQvcnJpN1lnVFdhWGdLUUNlYUwydnUvc25JWHRpUEFnQUFDU2tBZ1JuL2M4VllsWkZZcjZFcEFCMFllYkZtL0U5bTlzUStGSUNnM1AxenhkMFVJN0p1dzFJQUd0TjBXWFAzRC9iR0hoUUFBRWhJQVFqSStKOHJ4cWlNelBvTjZjR2ZaQUFnQm5uVWtnbEFRei8vK0YrOUw0RmduUC9EQi9iSXRoU0FZSXovdVdKOHlneXM0M0FVQUFCSVNBRm94R2lMTmVOL3VHYXZiRWNCQ01UNG55dkdwc3pFZWc1RkFRQ0FoQlFBQUVoSUFXakFtUlpyenYvaE5udG1Hd3BBRU03L3VlSzhsQmxaMTJFb0FBQ1FrQUlBQUFrcEFBQ1FrQUpRbVlkWldQTUFJTnhuNzZ4UEFRakFBNEJjOGFBVU03TytRMUFBQUNBaEJRQUFFbElBQUNBaEJRQUFFbElBQUNBaEJhQWlYMk5oelZjQVlUdDdhRjBLUUdlK0FzZ1ZYNUVpQSt1OE93VUFBQko2V0M2OUx3RUFicEJSMVpnQUFFQkNDZ0FBSlBUdzgvOTV5bkt2ejk3OVMrOUxBRWpDR1VBdEpnQUFrSkFDQUFBSktRQUFrSkFDQUFBSktRQUFrSkFDQUFBSktRQUFrSkFDQUFBSktRQUFrTkNEMzJvSEFQbVlBQUJBUWdvQUFDU2tBQUJBUWdwQVo0OWYvYjczSlJETm4vN1Erd3FnUHV1OE93V2dJZzlZc25iNXl4OTdYd0lNd3g1YWx3SUFBQWtwQUFDUWtBSUFBQWtwQUFDUWtBSUFBQWtwQUFINEtpQlhmRVdLbVZuZklTZ0FsZmthQzJ1K0NnajMyVHZyVXdBQUlDRUZBQUFTZXJnc2w5N1hBQUFma1UzMW1RQUU0VUZBcm5oUWlobFoxMkVvQUEyOGZmZmIzcGRBTUI0RWhOdnNtVzBvQUFDUWtBSUFBQWtwQUlGNERvQXJ6a3VaaWZVY2lnTFFpRE10MWp3SEFOZnNsZTBvQUFDUWtBSVFqR01BcmhpYk1nUHJPQndGb0NHakxkWWNBOEFIOXNpMkZBQUFTRWdCQ01neEFGZU1UeG1aOVJ1U0FnQUFDU2tBalRuallzMXpBR0J2N0VFQkNNb3hBRmVNVVJtUmRSdVdBdENCcHN1YUtRQ1oyUlA3VUFBQ013WGdpcnNwUm1LOWhxWUFBRUJDQ2tBblJsNnNPUVlnSTN0aFB3cEFjSTRCdUdLc3lnaXMwL0FVZ0k0MFg5Wk1BY2pFSHRpWEFqQUFVd0N1dUxzaU11dHpDQXBBWnhvd2E2WUFaR0R2NjA4QkdJUXBBRmZjWlJHUmRUa01CUUFBRWxJQUF0ZzZDak1GeUdQek1ZQzdMU0xadUI2Ti8yTjRzeXlYeFQ4Ui90bEdDZUNLRWtBRXU5Wmg3LzNXUDh0eU1RR0k0dTI3My9XK0JJTHhNQ0F6c3RmRm9RQUVzdldEWVFxUWg2TUFockI1OUMvOEkzbllNWDBHZ09Qa1RTZ21BTUc4L2NJVWdJK1pBaERhMXJ2L2pYc2I3U2dBQTFNQ3VLSUUwSkwxTmpRRklDQk5tVFVQQkRJeWUxcE1Dc0RnVEFHNDRxNk1GcXl6NFNrQVFlMXB6RXBBRHJ1bUFEWm5hdHF4dnR6OXg2VUFCS1lFc0tZRTBKM3duNFlDQUFBSktRREJtUUt3WmdwQU4rNytwNklBREVBSllFMEpvRG5oUHgwRllCQktBR3RLQU0wSS95a3BBQUNRa0FJd0VGTUExa3dCcU03ZC83UVVnTUVvQWF3cEFWUWovS2VtQUF4SUNXQk5DYUE0NFQ4OUJTQUJKWUFyU2dDdnNUNVNVQUFHdGJkeEt3SHoyLzBIZzJ6eXZHVG51bkQzUHk0RllHQktBR3RLQUtjSS8xUVVnTUVwQWF3cEFSd2kvTk5SQUNhZ0JMQ21CTENMOEU5SkFaaUVFc0NhRXNBbXdqOHRCV0FpU2dCclNnQ3ZFdjZwWFQ1Nzk5dkgzaGRCV1gvOTRUOTMveis3ZzRKaEhDNTYzMzVYOWtLSTQwRFJFLzd6dVh6MjduY0t3SVQrK3NOLzdQNS9sSUQ1bko3eUtBSHpPUlQrMzFTNEVIcHpCRENwSXg5WVJ3SnpLZkorT2hLWWkvRG5HUk9BeVIyWkJDeUxhY0RJcWhVNTA0QnhIU3h5d245dUpnQ1RPL29CTmcwWVU5WDN6VFJnVE1LZkd4U0FCSlNBSEpxOFgwckFXSVEvcjdnOFBqNDZBdGhwMUEvSDBlT0FaWEVrRUZtM291WklJSzRUUlczVS9ZMzlUQUFTT2ZQQk5nMkk2Y3o3OHZhTGI4NXQ5cVlCTVFsL05qSUJPR0NHRDRscHdOak9CdjlMenF3SjA0QUFCRDg3S1FBSHpQSmhPYlhoTDRwQUQyY25NZmZXN3RrMW9RaDBjSElTTTh0K3huNk9BQkk3KzhGM0xOQlc3ZkRmK3QrOHlyRkFXOEtmRTB3QURwanhRMk1hRUZlTDRIK0phVUJnZ3A4Q0ZJQURadjN3bk43d0YwV2dwQklUbHJOcnRjU2FVQVFLS2pCaG1YWC9ZajhGNElEUEovNEEvVlJpdzE4VWdUTktIYTJVV3FlbDFvUWljRUtobzVXWjl5NzJVd0FPeVBBaEtyYnBMOHJBRmlXZnA2aTFQa3V1Q1dWZ2c0TFBVMlRZczloUEFUZ2d5NGVwNklhL0tBSXZLZjBnWmUyMVdYcE5LQUl2S1B3Z1paYjlpdjB1Yi8weElPNG92dWt2dWN0QWpXOVB0TjdrYTZ5SjFHV2d3cmNuQkQvM0tBQnNWbVhUWDNLVWdWcGZtZXk5eWRkYUV5bktRS1d2VFBaZUU0eERBV0MzYXB2K01sY1pxUGw3RXFKdDhqWFh4RlJsb09MdlNZaTJKb2hQQWVDUXFoditNeU1WZ2xhL0dDbnFSdDlxVFF4VkNCcjlZcVNvYTRMWUZBQk9hYmJwUHhPaEZQVDRMWWlqYlBJOTFrU0lVdERodHlDT3NpYUlTUUdnbUM0Yi8wckpjaERoVngyUHZzRkhXQk5GeTBHQVgzVTgrcG9nRGdXQTRrSnMrb09iYlpPM0pzNmJiVTNRbndKQU5UYjkvV2JmNUsySi9XWmZFL1NqQU5DRWpmKzJyQnU4TlhGYjFqVkJXd29BVGRuMFA3REp2MmROZkdCTjBOTGw3YnR2RkFDNitlbUhmKzk5Q2MxOC9zVy85cjZFSVZnVDBJWUNRQmd6YnZ3MitIT3NDYWhIQVNDc0VUZC9tM3RkMWdTVW93QXdsRWdCWUdPUHdacUFZeFFBcGxFakNHem9ZN01tNERZRkFBQVNldFA3QWdDQTloUUFBRWhJQVFDQWhCNldTKzlMQUFCYU13RUFnSVFVQUFCSVNBRUFnSVFVQUFCSVNBRUFnSVFVQUFCSVNBRUFnSVFVQUFCSVNBRUFnSVFVQUFCSVNBRUFnSVFVQUFCSVNBRUFnSVFVQUFCSVNBRUFnSVFVQUFCSTZHRlpMcjJ2QVFCb3pBUUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ0lRVUFBQkpTQUFBZ29ZZkxjdWw5RFFCQVl5WUFBSkNRQWdBQUNTa0FBSkNRQWdBQUNTa0FBSkNRQWdBQUNTa0FBSkNRQWdBQUNTa0FBSkNRQWdBQUNTa0FBSkNRQWdBQUNTa0FBSkNRQWdBQUNWMGVIeDhmZTE5RVQxOSsrWFh2UytqcSsrLy8zUHNTdXZMK2UvOHo4LzduZnY5TkFBQWdJUVVBQUJKU0FBQWdJUVVBQUJKU0FBQWdJUVVBQUJKU0FBQWdJUVVBQUJKU0FBQWdJUVVBQUJKNnN5ekxwZmRGQUFCTlhVd0FBQ0FoQlFBQUVsSUFBQ0FoQlFBQUVsSUFBQ0FoQlFBQUVsSUFBQ0NocHdMZ2R3RUFRQTZYWlRFQkFJQ1VGQUFBU0VnQkFJQ0VGQUFBU09oNUFmQWdJQURNN2U5WmJ3SUFBQWtwQUFDUWtBSUFBQW10QzREbkFBQmdUaDlsdkFrQUFDU2tBQUJBUXBjdnZ2aW45Yjk3N0hFaHZYei8vWjk3WDBKWFgzNzVkZTlMNk1yNzcvM1B6UHVmN3YyL2V3VGdPUUFBbU10VnRqc0NBSUNFRkFBQVNPaFdBWEFNQUFCemVESFRUUUFBSUNFRkFBQVNlcTBBT0FZQWdMSGR6SElUQUFCSVNBRUFnSVR1RlFESEFBQXdwbGN6M0FRQUFCTGFVZ0JNQVFCZ0xIZXoyd1FBQUJKU0FBQWdvYTBGd0RFQUFJeGhVMmFiQUFCQVFuc0tnQ2tBQU1TMk9hdE5BQUFnb2IwRndCUUFBR0xhbGRFbUFBQ1EwSkVDWUFvQUFMSHN6bVlUQUFCSTZHZ0JNQVVBZ0JnT1piSUpBQUFrZEtZQW1BSUFRRitIcy9qc0JFQUpBSUErVG1Xd0l3QUFTS2hFQVRBRkFJQzJUbWV2Q1FBQUpGU3FBSmdDQUVBYlJUTDM4cXQvL0xjU1ArZkpZOGtmQmdCOHBOZ050eU1BQUVpb2RBRndGQUFBZFJUTjJCb1RBQ1VBQU1vcW5xMjFqZ0NVQUFBb28wcW1lZ1lBQUJLcVdRQk1BUURnbkdwWlduc0NvQVFBd0RGVk03VEZFWUFTQUFEN1ZNOU96d0FBUUVLdENvQXBBQUJzMHlRelcwNEFsQUFBZUYyenJHeDlCS0FFQU1ETG1tWmtqMmNBbEFBQStGanpiT3oxRUtBU0FBRHZkY25FbnQ4Q1VBSUF5SzViRnZiK0dxQVNBRUJXWFRPd2R3RllGaVVBZ0h5NloxK0VBckFzQVY0SUFHZ2tST1pGS1FETEV1UUZBWUNLd21SZHBBS3dMSUZlR0FBb0xGVEdSU3NBeXhMc0JRS0FBc0psVzhRQ3NDd0JYeWdBT0Noa3BrVXRBTXNTOUFVRGdCM0NabG5rQXJBc2dWODRBTGdqZElaRkx3RExFdndGQklBWGhNK3Vod0d1Y1ZrK1hPUmoxNnNBZ05jTkVhckxNc1lFNExsaFhsZ0EwaGtxbzBZckFNc3kyQXNNUUFyRFpkTkQ3d3M0eUpFQUFCRU1GL3hQUnB3QVBEZnNDdy9BOEliT29ORUx3TElNL2dZQU1LVGhzMmZVSTRBMVJ3SUF0REI4OEQrWllRTHczRFJ2REFEaFRKVXhzMHdBbmpNTkFLQ2txWUwveVl3RjRJa2lBTUFaVXdiL2s5bU9BRjR5OVJzSVFCWFRaOGZNRTREblRBTUEyR0w2NEgrU3BRQThVUVFBZUVtYTRIK1NyUUE4VVFRQVdKYUV3ZjhrYXdGNG9nZ0E1SlEyK0o5a0x3QlBGQUdBSE5JSC94TUY0R1BQRjRZeUFEQUhvZjhDQmVBMlV3R0FzUW4rVnlnQTk1a0tBSXhENkcra0FPeWpEQURFSS9RUFVBQ09Vd1lBK2hINkp5a0FaYXdYb2tJQVVKYkFMMHdCcUVNaEFEaEg0RmVtQUxUeDBrSldDZ0RlRS9ZZEtBRDkzRnZ3Q2dJd0N3RWYwUDhET1hsRllXL1BRQTRBQUFBQVNVVk9SSzVDWUlJPSIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9wbmciLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn0seyJzcmMiOiJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUxRQUFBQzBDQVlBQUFBOXpRWXlBQUFIQmtsRVFWUjRuTzNkVDNMY1JCU0E4U2ZYN0NnbjQ5aGhrUVZKS0hCWWNBYTRFd2ZoVG5BS1dQQnZ3eWJCeHI3QXNDQnlXcHFXMUpKYTNlODlmYjhxVnlXcFpOd2FmWDdUTTNJOHpXZlBYb2tDcDlvTFFCWk43UVVjS24xZUF2YXBmMTZMQjE0eWFDTGVuL0NjRjRsNzY2Q0pHSzBpY1c4Vk5DRmpUTnRIOXJBdmN0K2dFRFBTWlc4bDU0UW1aQ3lSZFZybm10REVqTFd5TkxSMlFoTXljbG85clE4ci9pMHhZeXNuV1JqbTBpMEhNV05yaXhwYkVqUXhvNVRacmMwTm1waFIycXptNWdSTnpLZ2x1YjNVb0lrWnRTVTFtQkkwTVVPTHlSYTN1UFFOVkRNVk5OTVoyb3cyT1haaGhaaWgxZUNGRjdZY2NPVXdNS0NaenRBdU9xVmpFNXFZWWNWWnEydzU0TXFoTjdPWnpyQ21zL1ZnUXNNVmdvWXJZZEJzTjJEVlU3dHIvc2NLb0E1YkRyalNCczEyQTlhZFJKalFjSWFnNFFwQnc1VUxZZjhNUDA1TWFMaEMwSENGQ3l0d2hRa05Wd2dhcmhBMFhCbjZQNFdBU1V4b3VFTFFjSVdnNFFwQnc1VkR3N05DT0ZMcnpldXJlcnovTS9udlBydDZzOWs2bHJDODloS2F5K05yMTk5dE55ZUFWS1ZDc2J6Mldsd0d2VVVJUTNJSFlubnRHcmdLT2pXRzV1K2ZrbS96OU9yN3BMKzNObzdra0wvN0lmMUdmLzR4NmE5NUN0dEYwRk14ekFsNHlsVGdjK09ZREhsT3dGTW1BdmNRdHVtZ3gyTElHZkdRc2JpbjRoZ05PV2ZFUTBiaXRoeTIyYUJqUVpTSWVFZ3M3cUV3b2pHWGlIaElKRzZyVVRlbjA2bFkwTG51SkcweHQxS2lWaGR6eTBuVWhZTit1K3JmUDk3L2NmWm5Ha0x1UzMwaXFTTGt2bWpZNjg1YlNXWXVmVnVKV1NSeFhScGpGb211SzNiZmE5VmNIdCtvMzBQMzcxQ3RJY2VjVFd1dEljZjBwcldGU2ExK1FoTnpSYjMxV3BqVXFvTW1aZ1dNUmEwMmFHSld4RkRVRjlLSXFQd0lXSXI1alBXWVcvM2pxTjNId0lmS0NmMTQ5MmtDV0l1NU01Mjl4TndLamljOFI1cW9DMXJySFpVaStmVm5KelNlcStieTZxMmFsKzBlNzM3di9ON1NkSGEzYng3VGZ6bnZ4WmVWRm5KTzNZUnVXWXI1ak9lWVJWUWZuNXFnKzlQWmtyMXROZm8wblRzMVFZZVl6Z1lvUFU0VlFZZGY0ZFppZHYycXhwVE9xeDQ2cG5UL3pldUJ4VFMwVkgxQ1B5ajV5bDVpNzN2blBnM25zbnJRSVd2YmpZNjliVGRheW81YlZkREFXaGMxTDd4cmVJaGFpdTFHM1AvbnRGNVRhaVkwMnczREZCMi9tcUNCSEFnYXJoQTBYS2tXOU1QZGIwKy90clovM3ZYVndTSEIvUkNlMjlLWTBIQ0ZvT0VLNzFPSWJWVHE2dkR3VDduOXp2UHJyNHA5THRSV3AyaTJISENGb09IS2dXMEFQR0ZDd3hXQ2hpc0VEVmVxQlIzdTNhMTliM0huVW4zaVc2ZTVGOXdQTlorWE1hSGhDbTllait4cU5zV0VoaXRxZ3JhMmorN1krejVhMGZGWERmcDQvWFhOVDcrS3RlL2hMcVgyT1ZVem9ZRWNWQVhOdHNNZ1pjZGRQZWphRDFGcnNPM28wbkF1cXdjTjVLUWk2UEFyMjlxMlk5ZFhEWVBqMVRDZFJTci9LTER1eHlmV291N1lTOVJueDFtN24vWkhnZFZmZzBnamNyeTVYWEN2NnJEM3ZmVHg1clo2UCsySGlpMUhERk5hTWNYSHB5cm8vcFMyRlBYWmxGWjgwbGZwSFplMlIxWlZRWXZvdTRQbTJOdldRK081VWhlMFNQZU9zalNsUmNUM3F4N2hxeG9LWXhaUkduU2Z0YWc3dkVSdDVEalVCczErV2hIbCsrYVEycUJGaUZvRlF6R0xpRFRQcjIvVnZIbjlrSDgvL05yNXZhVW5YNmJmMVA0czVuZVZGcExPUk5BaTUxR0w2QTU3OHRGRWM5aVJSeE1MTVl1SU5LZlRxVmpRYSs4VUsxRW5iNDAwUm0wNFpoRmpRYmUwaGgwTHVYL01zYldyQ050NHlDM1ZUd3FIeE83bzJrOFlVMkllK3JQcVR4aWR4Q3dpMGh5TjdLRmo3bVBUN3FNU0UzdnNpK2hxSW9peHRSZVoyQ05mUkZOcjE4eDAwSzNST0NSdjNGT1BCSE5qbUZwNzFyZ25IZ2tzaDl4eUVYUnJNbzZQNWdTZXVwVlpHMFBxMm1jRm5yaVY4UkJ5eTFYUXJlUTRNc2dkZytXMWE5QWNyOSs1Q3pwMC8rR1g3TGQ1ZGZOTjl0dU1zYnoyV3R3SEhUTW5GRzBCV0Y1N0Nic01Hbjd4UG9Wd3hlU0ZGV0FJUWNNVmdvWXJCQTFYQ0JxdUhQby9oZ3V3akFrTlZ3Z2FyaEEwWENGb3VFTFFjSVdnNFFwQnd4V0NoaXU4ZVQxY1lVTERGWUtHS3dRTlZ3Z2FybXoyd3hwZnZueTl4YzJLaU1qNzkzOXRjcnVzdWN2aW1wblFjSVdnNFFwQnd4V0NoaXNFRFZjSUdxNWNDUDlMRm40MFRHaTRRdEJ3aGFEaFNuTno4MFg3NjZ5WHdMZTZiQ3F5M2FWVDF0eGxiTTJOQ0JNYXpoQTBYQW1ENXVVN1dQWFVMaE1hcmhBMFhPa0h6YllEMW5TYVpVTERsVmpRVEdsWWNkYnEwSVFtYW1nWGJaUXRCMXdaQzVvcERhMEcyMnhlZlA3dDFEL212Y0NoeWVpZ1pjc0JWMUtDWnVzQkxTWmJUSjNRUkkzYWtocWNzK1VnYXRTUzNON2NQVFJSbzdSWnpTMTVVa2pVS0dWMmEwdGY1U0JxYkcxUlkydmV2TDRSWHFQR05oWkhlY2owaVFrYk9heCs1TTkxWVlVdENOYkswdERhQ1IxaVdtT0pyTU53aTB2ZlRHdWt5dDVLemdrZFlscGp6R1pEYjZ1Z1crSENpWHZmaWp4eWJ4MTBpTGozcC9qMnMyVFFvZjZCRXJnUDFaOC8vUWNPYXUxOUVuUThMd0FBQUFCSlJVNUVya0pnZ2c9PSIsInNpemVzIjoiMTgweDE4MCIsInR5cGUiOiJpbWFnZS9wbmcifV19">
+<title>FaceRace</title>
+<style>
+/* ============ TOKENS ============ */
+:root {
+  --bg: #0b0e1a;
+  --bg-2: #121627;
+  --panel: #181d33;
+  --panel-2: #1f2542;
+  --line: #2b3258;
+  --text: #eef1ff;
+  --muted: #9aa3cf;
+  --accent: #ff3d71;     /* hot vermilion-pink */
+  --accent-2: #00e5c0;   /* electric teal */
+  --gold: #ffd23f;
+  --silver: #cfd6e6;
+  --bronze: #e08a4e;
+  --green: #34d97b;
+  --shadow: 0 18px 50px rgba(0,0,0,.55);
+  --radius: 22px;
+  --lane: #1c2240;
+  --lane-line: rgba(255,255,255,.06);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+[data-theme="light"] {
+  --bg: #eef1f9;
+  --bg-2: #e4e8f5;
+  --panel: #ffffff;
+  --panel-2: #f3f5fc;
+  --line: #d8deef;
+  --text: #141a2e;
+  --muted: #5a6489;
+  --lane: #e7ebf7;
+  --lane-line: rgba(0,0,0,.05);
+  --shadow: 0 18px 50px rgba(60,70,120,.18);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(255,61,113,.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(0,229,192,.10), transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+@font-face { font-family: "Space Grotesk"; src: local("Space Grotesk"); }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+img { user-select: none; -webkit-user-drag: none; }
+input { font-family: inherit; }
+
+/* ============ APP SHELL ============ */
+.app {
+  max-width: 760px; margin: 0 auto; min-height: 100%;
+  padding: calc(var(--safe-top) + 14px) 16px calc(var(--safe-bottom) + 110px);
+  position: relative;
+}
+
+/* ============ HEADER ============ */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 18px;
+}
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand .flag {
+  width: 42px; height: 42px; border-radius: 13px;
+  background: linear-gradient(135deg, var(--accent), #ff7aa2);
+  display: grid; place-items: center; box-shadow: 0 8px 20px rgba(255,61,113,.4);
+  font-size: 22px; transform: rotate(-6deg);
+}
+.brand h1 {
+  font-size: 23px; font-weight: 800; letter-spacing: -.5px; margin: 0; line-height: 1;
+}
+.brand .tag { font-size: 11px; color: var(--muted); letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700; }
+.icon-btn {
+  width: 44px; height: 44px; border-radius: 14px; background: var(--panel);
+  display: grid; place-items: center; font-size: 20px; border: 1px solid var(--line);
+  transition: transform .15s, background .2s;
+}
+.icon-btn:active { transform: scale(.92); }
+.head-actions { display: flex; gap: 9px; }
+
+/* ============ TABS ============ */
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  display: flex; justify-content: center; gap: 6px;
+  padding: 10px 12px calc(10px + var(--safe-bottom));
+  background: linear-gradient(to top, var(--bg) 60%, transparent);
+  backdrop-filter: blur(8px);
+}
+.tabs-inner {
+  display: flex; gap: 4px; background: var(--panel); border: 1px solid var(--line);
+  padding: 6px; border-radius: 20px; box-shadow: var(--shadow); width: 100%; max-width: 480px;
+}
+.tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 9px 4px; border-radius: 14px; font-size: 10.5px; font-weight: 700;
+  color: var(--muted); letter-spacing: .3px; transition: all .2s;
+}
+.tab .ic { font-size: 19px; }
+.tab.active { background: linear-gradient(135deg, var(--accent), #ff6f97); color: #fff; box-shadow: 0 6px 16px rgba(255,61,113,.4); }
+
+/* ============ VIEWS ============ */
+.view { display: none; animation: fade .35s ease; }
+.view.active { display: block; }
+@keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ============ SETUP CONTROLS ============ */
+.bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px; gap: 10px;
+}
+.bar h2 { font-size: 16px; margin: 0; font-weight: 800; letter-spacing: -.3px; }
+.count-pill { font-size: 12px; color: var(--muted); font-weight: 700; background: var(--panel); padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); }
+
+.quick-row { display: flex; gap: 9px; margin-bottom: 16px; }
+.btn {
+  border-radius: 16px; font-weight: 800; font-size: 14px; padding: 14px 16px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform .12s, filter .2s, opacity .2s; border: 1px solid transparent;
+}
+.btn:active { transform: scale(.96); }
+.btn.primary { background: linear-gradient(135deg, var(--accent), #ff6f97); color: #fff; box-shadow: 0 10px 26px rgba(255,61,113,.38); }
+.btn.ghost { background: var(--panel); color: var(--text); border-color: var(--line); }
+.btn.teal { background: linear-gradient(135deg, var(--accent-2), #46f0d6); color: #022; box-shadow: 0 10px 24px rgba(0,229,192,.32); }
+.btn.full { width: 100%; }
+.btn.lg { padding: 17px; font-size: 15px; }
+.btn:disabled { opacity: .4; pointer-events: none; }
+
+/* ============ RACER GRID ============ */
+.racers { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; }
+.racer-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
+  padding: 12px 10px 11px; position: relative; text-align: center;
+  transition: transform .15s, border-color .2s; animation: pop .3s ease;
+}
+@keyframes pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
+.racer-card .avatar {
+  width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 8px;
+  object-fit: cover; border: 3px solid var(--accent-2); background: var(--panel-2);
+  display: block;
+}
+.racer-card .avatar.ph { display: grid; place-items: center; font-size: 26px; color: var(--muted); border-style: dashed; border-color: var(--line); }
+.racer-card .nm {
+  font-size: 12px; font-weight: 700; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; margin-bottom: 2px;
+}
+.racer-card .rec { font-size: 9.5px; color: var(--muted); font-weight: 600; letter-spacing: .3px; }
+.racer-card .x {
+  position: absolute; top: -6px; right: -6px; width: 24px; height: 24px;
+  background: var(--accent); color: #fff; border-radius: 50%; font-size: 14px; font-weight: 800;
+  display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.4); border: 2px solid var(--bg);
+}
+.add-card {
+  background: var(--panel-2); border: 2px dashed var(--line); border-radius: 20px;
+  display: grid; place-items: center; min-height: 120px; color: var(--muted);
+  flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700;
+}
+.add-card .plus { font-size: 30px; line-height: 1; }
+.add-card:active { transform: scale(.96); }
+
+.empty {
+  text-align: center; padding: 50px 20px; color: var(--muted);
+}
+.empty .big { font-size: 54px; margin-bottom: 12px; }
+.empty p { font-size: 14px; line-height: 1.5; max-width: 280px; margin: 0 auto; }
+
+/* ============ PRESETS ============ */
+.preset-row {
+  display: flex; align-items: center; gap: 12px; padding: 11px 13px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 9px;
+}
+.preset-thumbs { display: flex; flex-shrink: 0; }
+.preset-thumbs img, .preset-thumbs .ph {
+  width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
+  border: 2px solid var(--panel); margin-left: -10px; background: var(--panel-2);
+}
+.preset-thumbs > :first-child { margin-left: 0; }
+.preset-thumbs .more {
+  width: 34px; height: 34px; border-radius: 50%; margin-left: -10px; border: 2px solid var(--panel);
+  background: var(--panel-2); display: grid; place-items: center; font-size: 11px; font-weight: 800; color: var(--muted);
+}
+.preset-info { flex: 1; min-width: 0; }
+.preset-info .pnm { font-size: 14px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preset-info .psub { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 1px; }
+.preset-btns { display: flex; gap: 6px; flex-shrink: 0; }
+.preset-btns button {
+  width: 38px; height: 38px; border-radius: 11px; background: var(--panel-2); border: 1px solid var(--line);
+  display: grid; place-items: center; font-size: 16px; transition: transform .12s;
+}
+.preset-btns button:active { transform: scale(.9); }
+.preset-btns .load { background: linear-gradient(135deg, var(--accent-2), #46f0d6); color: #022; border-color: transparent; }
+
+/* ============ SETTINGS PANEL ============ */
+.settings { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin-top: 20px; }
+.settings h3 { margin: 0 0 14px; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 800; }
+.field { margin-bottom: 18px; }
+.field:last-child { margin-bottom: 0; }
+.field > label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 9px; }
+.seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg button {
+  flex: 1; min-width: 60px; padding: 11px 8px; border-radius: 12px; background: var(--panel-2);
+  border: 1px solid var(--line); font-size: 12.5px; font-weight: 700; color: var(--muted);
+  transition: all .18s;
+}
+.seg button.on { background: linear-gradient(135deg, var(--accent-2), #46f0d6); color: #022; border-color: transparent; }
+.seg.themed button.on { background: linear-gradient(135deg, var(--accent), #ff6f97); color: #fff; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; }
+.switch { width: 50px; height: 30px; border-radius: 999px; background: var(--line); position: relative; transition: background .2s; flex-shrink: 0; }
+.switch.on { background: var(--green); }
+.switch .knob { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 2px 5px rgba(0,0,0,.3); }
+.switch.on .knob { transform: translateX(20px); }
+
+/* ============ MODAL ============ */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(5,7,16,.7); backdrop-filter: blur(6px);
+  z-index: 100; display: none; align-items: flex-end; justify-content: center;
+}
+.modal-bg.open { display: flex; animation: fade .25s; }
+.modal {
+  background: var(--panel); width: 100%; max-width: 480px; border-radius: 26px 26px 0 0;
+  padding: 22px 20px calc(26px + var(--safe-bottom)); box-shadow: var(--shadow);
+  animation: slideUp .3s cubic-bezier(.2,.9,.3,1); border: 1px solid var(--line); border-bottom: none;
+}
+@media (min-width: 520px) { .modal-bg { align-items: center; } .modal { border-radius: 26px; border-bottom: 1px solid var(--line); } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+.modal h3 { margin: 0 0 18px; font-size: 19px; font-weight: 800; }
+.modal .preview-row { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 18px; }
+.modal .preview {
+  width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent-2);
+  background: var(--panel-2); display: grid; place-items: center; font-size: 40px; color: var(--muted);
+}
+.text-input {
+  width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--panel-2);
+  border: 1px solid var(--line); color: var(--text); font-size: 15px; font-weight: 600;
+}
+.text-input:focus { outline: none; border-color: var(--accent-2); }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.hint { font-size: 11.5px; color: var(--muted); text-align: center; margin-top: 10px; }
+
+/* ============ RACE STAGE ============ */
+.race-stage {
+  position: fixed; inset: 0; z-index: 90; background: var(--bg); display: none;
+  flex-direction: column; overflow: hidden;
+}
+.race-stage.open { display: flex; }
+.race-bg { position: absolute; inset: 0; z-index: 0; transition: opacity .4s; }
+.race-top {
+  position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between;
+  padding: calc(var(--safe-top) + 12px) 16px 10px; gap: 12px;
+}
+.race-top .timer {
+  font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -1px;
+  text-shadow: 0 2px 10px rgba(0,0,0,.6);
+}
+.race-top .lead-pill {
+  background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.15); border-radius: 999px;
+  padding: 7px 14px; font-size: 12px; font-weight: 700; backdrop-filter: blur(8px);
+  display: flex; align-items: center; gap: 7px; max-width: 55%;
+}
+.race-top .lead-pill img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+.race-top .lead-pill .lbl { color: var(--gold); font-size: 10px; letter-spacing: 1px; }
+.race-close { width: 40px; height: 40px; border-radius: 12px; background: rgba(0,0,0,.4); display: grid; place-items: center; font-size: 18px; border: 1px solid rgba(255,255,255,.12); }
+
+.track-wrap { position: relative; z-index: 3; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 4px 0 14px; }
+.lane {
+  position: relative; height: 58px; margin: 0 12px 7px; border-radius: 16px;
+  background: var(--lane); overflow: hidden; border: 1px solid var(--lane-line);
+}
+.lane::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(90deg, transparent 0 38px, var(--lane-line) 38px 40px);
+}
+.lane .finish {
+  position: absolute; right: 6px; top: 0; bottom: 0; width: 12px;
+  background-image: repeating-conic-gradient(#fff 0 25%, #000 0 50%);
+  background-size: 8px 8px; border-radius: 3px; opacity: .85;
+}
+.runner {
+  position: absolute; top: 50%; left: 0; transform: translate3d(0, -50%, 0);
+  width: 46px; height: 46px; will-change: transform; backface-visibility: hidden;
+}
+.runner img {
+  width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
+  border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.5); display: block;
+}
+.runner .pos-badge {
+  position: absolute; top: -8px; left: -8px; min-width: 19px; height: 19px; padding: 0 4px;
+  border-radius: 999px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800;
+  display: grid; place-items: center; border: 2px solid var(--bg);
+}
+.runner.boost img { border-color: var(--gold); box-shadow: 0 0 16px var(--gold); }
+.runner.slow img { border-color: #6b7299; filter: saturate(.5) brightness(.8); }
+.runner .fx { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 16px; white-space: nowrap; animation: floatUp 1s ease forwards; }
+@keyframes floatUp { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -18px); } }
+.lane .name-tag {
+  position: absolute; left: 8px; bottom: 4px; font-size: 9.5px; font-weight: 700;
+  color: rgba(255,255,255,.75); text-shadow: 0 1px 3px #000; pointer-events: none; z-index: 2;
+}
+
+/* Event banner */
+.event-banner {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(.6);
+  z-index: 20; background: rgba(0,0,0,.55); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.2); padding: 14px 22px; border-radius: 18px;
+  font-size: 17px; font-weight: 800; opacity: 0; pointer-events: none; text-align: center;
+  box-shadow: var(--shadow); max-width: 80%;
+}
+.event-banner.show { animation: eventPop 2s ease forwards; }
+@keyframes eventPop {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.6); }
+  15% { opacity: 1; transform: translate(-50%,-50%) scale(1.05); }
+  25% { transform: translate(-50%,-50%) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(.9); }
+}
+
+/* Countdown */
+.countdown {
+  position: absolute; inset: 0; z-index: 30; display: none; place-items: center;
+  background: rgba(5,7,16,.55); backdrop-filter: blur(4px);
+}
+.countdown.show { display: grid; }
+.cd-num {
+  font-size: 140px; font-weight: 800; line-height: 1; letter-spacing: -6px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text;
+  background-clip: text; color: transparent; animation: cdPulse .85s ease;
+}
+@keyframes cdPulse { 0% { transform: scale(.3); opacity: 0; } 35% { transform: scale(1.1); opacity: 1; } 70% { transform: scale(1); } 100% { transform: scale(1.4); opacity: 0; } }
+
+/* Finish screen */
+.finish-screen {
+  position: absolute; inset: 0; z-index: 50; background: rgba(7,9,20,.92); backdrop-filter: blur(12px);
+  display: none; flex-direction: column; padding: calc(var(--safe-top) + 20px) 20px calc(var(--safe-bottom) + 20px);
+  overflow-y: auto;
+}
+.finish-screen.show { display: flex; animation: fade .4s; }
+.finish-screen .fs-title { text-align: center; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 800; margin-bottom: 4px; }
+.finish-screen .fs-sub { text-align: center; font-size: 26px; font-weight: 800; margin-bottom: 24px; letter-spacing: -.5px; }
+.podium { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin-bottom: 22px; }
+.pod-col { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; max-width: 130px; }
+.pod-col .pic { border-radius: 50%; object-fit: cover; border: 4px solid; box-shadow: var(--shadow); }
+.pod-col.p1 .pic { width: 96px; height: 96px; border-color: var(--gold); }
+.pod-col.p2 .pic { width: 74px; height: 74px; border-color: var(--silver); }
+.pod-col.p3 .pic { width: 74px; height: 74px; border-color: var(--bronze); }
+.pod-col .pn { font-size: 13px; font-weight: 800; text-align: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pod-col .medal { font-size: 24px; }
+.pod-base { width: 100%; border-radius: 14px 14px 0 0; display: grid; place-items: center; font-size: 30px; font-weight: 800; color: rgba(0,0,0,.5); }
+.pod-col.p1 .pod-base { height: 84px; background: linear-gradient(180deg, var(--gold), #d9a800); }
+.pod-col.p2 .pod-base { height: 60px; background: linear-gradient(180deg, var(--silver), #9aa3bf); }
+.pod-col.p3 .pod-base { height: 44px; background: linear-gradient(180deg, var(--bronze), #b06a30); }
+.full-results { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 8px; margin-bottom: 18px; }
+.res-row { display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 12px; }
+.res-row + .res-row { border-top: 1px solid var(--line); }
+.res-row .rank { width: 24px; font-weight: 800; font-size: 14px; color: var(--muted); text-align: center; }
+.res-row img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--line); }
+.res-row .rnm { flex: 1; font-size: 13px; font-weight: 700; }
+.finish-actions { display: flex; flex-direction: column; gap: 10px; }
+
+/* Confetti canvas */
+#confetti { position: fixed; inset: 0; z-index: 80; pointer-events: none; display: none; }
+#confetti.on { display: block; }
+
+/* ============ STATS / HISTORY ============ */
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.stat-card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+.stat-card .v { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+.stat-card .l { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .5px; text-transform: uppercase; margin-top: 2px; }
+.lb-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 9px; }
+.lb-row img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-2); }
+.lb-row .lb-rank { font-size: 18px; font-weight: 800; width: 26px; text-align: center; }
+.lb-row .lb-info { flex: 1; }
+.lb-row .lb-name { font-size: 14px; font-weight: 800; }
+.lb-row .lb-sub { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 1px; }
+.lb-row .lb-pct { text-align: right; }
+.lb-row .lb-pct .pp { font-size: 18px; font-weight: 800; color: var(--green); }
+.lb-row .lb-pct .ps { font-size: 10px; color: var(--muted); }
+.hist-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 9px; }
+.hist-row img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+.hist-row .hi { flex: 1; }
+.hist-row .hn { font-size: 14px; font-weight: 800; }
+.hist-row .hd { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 1px; }
+.hist-row .hp { font-size: 11px; color: var(--muted); display: flex; gap: 4px; }
+
+/* Picker mode */
+.picker-stage {
+  position: fixed; inset: 0; z-index: 90; background: var(--bg); display: none;
+  flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+}
+.picker-stage.open { display: flex; }
+.wheel-wrap { position: relative; width: min(86vw, 360px); height: min(86vw, 360px); margin-bottom: 28px; }
+.wheel-wrap canvas { width: 100%; height: 100%; }
+.wheel-pointer {
+  position: absolute; top: -6px; left: 50%; transform: translateX(-50%); z-index: 4;
+  width: 0; height: 0; border-left: 16px solid transparent; border-right: 16px solid transparent;
+  border-top: 26px solid var(--accent); filter: drop-shadow(0 3px 4px rgba(0,0,0,.4));
+}
+.wheel-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 3;
+  width: 54px; height: 54px; border-radius: 50%; background: var(--panel); border: 3px solid var(--accent);
+  display: grid; place-items: center; font-size: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.4);
+}
+.picker-result {
+  text-align: center; min-height: 64px; margin-bottom: 18px;
+}
+.picker-result .winner-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 4px solid var(--gold); margin-bottom: 8px; animation: pop .4s; }
+.picker-result .winner-name { font-size: 22px; font-weight: 800; }
+.picker-close { position: absolute; top: calc(var(--safe-top) + 16px); right: 16px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="flag">🏁</div>
+      <div>
+        <h1>FaceRace</h1>
+        <div class="tag">Photo finish derby</div>
+      </div>
+    </div>
+    <div class="head-actions">
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+  <!-- SETUP VIEW -->
+  <section class="view active" id="view-setup">
+    <div class="bar">
+      <h2>Your racers</h2>
+      <span class="count-pill" id="countPill">0 / 20</span>
+    </div>
+    <div class="quick-row">
+      <button class="btn ghost" id="shuffleBtn">🔀 Shuffle</button>
+      <button class="btn ghost" id="savePresetBtn">💾 Save</button>
+      <button class="btn ghost" id="clearBtn">🗑 Clear</button>
+    </div>
+    <div class="racers" id="racerGrid"></div>
+
+    <div class="presets" id="presetsPanel" style="display:none">
+      <div class="bar" style="margin:22px 0 12px">
+        <h2 style="font-size:14px">📁 Saved groups</h2>
+        <span class="count-pill" id="presetCount">0</span>
+      </div>
+      <div id="presetList"></div>
+    </div>
+
+    <div class="settings">
+      <h3>Race settings</h3>
+      <div class="field">
+        <label>Duration</label>
+        <div class="seg" id="durSeg">
+          <button data-dur="10">10s</button>
+          <button data-dur="20" class="on">20s</button>
+          <button data-dur="30">30s</button>
+          <button data-dur="60">60s</button>
+          <button data-dur="custom" id="durCustom">⏱ Custom</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Theme</label>
+        <div class="seg themed" id="themeSeg">
+          <button data-th="track" class="on">🏟 Track</button>
+          <button data-th="beach">🏖 Beach</button>
+          <button data-th="space">🚀 Space</button>
+          <button data-th="football">🏈 Field</button>
+          <button data-th="golf">⛳ Golf</button>
+          <button data-th="casino">🎰 Casino</button>
+        </div>
+      </div>
+      <div class="field toggle-row">
+        <label style="margin:0">Random events <span style="color:var(--muted);font-weight:600">— boosts & banana peels</span></label>
+        <div class="switch on" id="eventsSwitch"><div class="knob"></div></div>
+      </div>
+      <div class="field toggle-row">
+        <label style="margin:0">Sound effects</label>
+        <div class="switch on" id="soundSwitch"><div class="knob"></div></div>
+      </div>
+      <div class="field">
+        <label>Custom background <span style="color:var(--muted);font-weight:600">(optional)</span></label>
+        <div class="quick-row" style="margin:0">
+          <button class="btn ghost" id="bgUploadBtn" style="flex:1">📷 Upload image</button>
+          <button class="btn ghost" id="bgClearBtn" style="display:none">Remove</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS VIEW -->
+  <section class="view" id="view-stats">
+    <div class="bar"><h2>Statistics</h2></div>
+    <div class="stat-grid" id="statSummary"></div>
+    <div class="bar"><h2 style="font-size:14px">Leaderboard</h2></div>
+    <div id="leaderboard"></div>
+  </section>
+
+  <!-- HISTORY VIEW -->
+  <section class="view" id="view-history">
+    <div class="bar">
+      <h2>Race history</h2>
+      <button class="btn ghost" id="clearHistBtn" style="padding:8px 12px;font-size:12px">Clear</button>
+    </div>
+    <div id="historyList"></div>
+  </section>
+</div>
+
+<!-- BOTTOM TABS -->
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab active" data-view="setup"><span class="ic">🏁</span>Setup</button>
+    <button class="tab" data-view="stats"><span class="ic">📊</span>Stats</button>
+    <button class="tab" data-view="history"><span class="ic">📜</span>History</button>
+    <button class="tab" id="pickerTab"><span class="ic">🎡</span>Picker</button>
+    <button class="tab" id="raceTab"><span class="ic">🚦</span>Race!</button>
+  </div>
+</nav>
+
+<!-- EDIT RACER MODAL -->
+<div class="modal-bg" id="editModal">
+  <div class="modal">
+    <h3 id="editTitle">Add racer</h3>
+    <div class="preview-row">
+      <div class="preview" id="editPreview">🏃</div>
+      <button class="btn teal" id="choosePhotoBtn">📷 Choose photo</button>
+    </div>
+    <input class="text-input" id="editName" placeholder="Racer name" maxlength="22">
+    <div class="modal-actions">
+      <button class="btn ghost full" id="editCancel">Cancel</button>
+      <button class="btn primary full" id="editSave">Save</button>
+    </div>
+    <div class="hint">Tip: square photos look best as circular avatars.</div>
+  </div>
+</div>
+
+<!-- RACE STAGE -->
+<div class="race-stage" id="raceStage">
+  <div class="race-bg" id="raceBg"></div>
+  <div class="race-top">
+    <div class="lead-pill" id="leadPill"><span class="lbl">LEAD</span> <span id="leadName">—</span></div>
+    <div class="timer" id="raceTimer">0.0</div>
+    <button class="race-close" id="raceClose">✕</button>
+  </div>
+  <div class="track-wrap" id="trackWrap"></div>
+  <div class="event-banner" id="eventBanner"></div>
+  <div class="countdown" id="countdown"><div class="cd-num" id="cdNum">3</div></div>
+  <div class="finish-screen" id="finishScreen">
+    <div class="fs-title">Photo Finish</div>
+    <div class="fs-sub" id="winnerHeadline">🏆 Winner!</div>
+    <div class="podium" id="podium"></div>
+    <div class="full-results" id="fullResults"></div>
+    <div class="finish-actions">
+      <button class="btn primary lg full" id="rematchBtn">🔁 Rematch</button>
+      <button class="btn teal lg full" id="shareBtn">📸 Share result</button>
+      <button class="btn ghost lg full" id="finishClose">Back to setup</button>
+    </div>
+  </div>
+</div>
+
+<!-- PICKER STAGE -->
+<div class="picker-stage" id="pickerStage">
+  <button class="icon-btn picker-close" id="pickerClose">✕</button>
+  <h2 style="margin:0 0 18px;font-size:20px">🎡 Wheel of Names</h2>
+  <div class="wheel-wrap">
+    <div class="wheel-pointer"></div>
+    <canvas id="wheelCanvas" width="720" height="720"></canvas>
+    <div class="wheel-center">🎯</div>
+  </div>
+  <div class="picker-result" id="pickerResult"></div>
+  <button class="btn primary lg" id="spinBtn" style="width:200px">SPIN</button>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<input type="file" id="fileInput" accept="image/*" style="display:none">
+<input type="file" id="bgFileInput" accept="image/*" style="display:none">
+
+<script>
+/* ===================== STATE & STORAGE ===================== */
+const LS_KEY = "pictureRace.v1";
+const HIST_KEY = "pictureRace.history.v1";
+const SET_KEY = "pictureRace.settings.v1";
+const PRESET_KEY = "pictureRace.presets.v1";
+
+let racers = [];      // {id, name, img, wins, podiums, races}
+let history = [];     // {ts, winner:{name,img}, podium:[...]}
+let presets = [];     // {id, name, ts, racers:[{name,img}]}
+let settings = { duration: 20, theme: "track", events: true, sound: true, bg: null };
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const uid = () => Math.random().toString(36).slice(2, 9);
+
+function load() {
+  try { racers = JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { racers = []; }
+  try { history = JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch { history = []; }
+  try { presets = JSON.parse(localStorage.getItem(PRESET_KEY)) || []; } catch { presets = []; }
+  try { settings = { ...settings, ...(JSON.parse(localStorage.getItem(SET_KEY)) || {}) }; } catch {}
+  racers.forEach(r => { r.wins ??= 0; r.podiums ??= 0; r.races ??= 0; });
+}
+function saveRacers() { localStorage.setItem(LS_KEY, JSON.stringify(racers)); }
+function saveHistory() { localStorage.setItem(HIST_KEY, JSON.stringify(history)); }
+function saveSettings() { localStorage.setItem(SET_KEY, JSON.stringify(settings)); }
+function savePresets() { localStorage.setItem(PRESET_KEY, JSON.stringify(presets)); }
+
+/* ===================== THEME ===================== */
+function initTheme() {
+  const saved = localStorage.getItem("pictureRace.theme") || "dark";
+  document.documentElement.setAttribute("data-theme", saved);
+  $("#themeBtn").textContent = saved === "dark" ? "☀️" : "🌙";
+}
+$("#themeBtn").onclick = () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  const next = cur === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("pictureRace.theme", next);
+  $("#themeBtn").textContent = next === "dark" ? "☀️" : "🌙";
+};
+
+/* ===================== RENDER RACERS ===================== */
+function renderRacers() {
+  const grid = $("#racerGrid");
+  $("#countPill").textContent = `${racers.length} / 20`;
+  grid.innerHTML = "";
+
+  if (racers.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.style.gridColumn = "1 / -1";
+    empty.innerHTML = `<div class="big">📸</div><p>Add 2–20 racers with their own photos to start a race. Tap below to add your first one.</p>`;
+    grid.appendChild(empty);
+  }
+
+  racers.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "racer-card";
+    const avatar = r.img
+      ? `<img class="avatar" src="${r.img}" alt="${escapeHtml(r.name)}">`
+      : `<div class="avatar ph">🏃</div>`;
+    const rec = r.races > 0 ? `${r.wins}W · ${r.podiums}🏅` : "New";
+    card.innerHTML = `
+      <button class="x" data-del="${r.id}" aria-label="Remove">×</button>
+      ${avatar}
+      <div class="nm">${escapeHtml(r.name)}</div>
+      <div class="rec">${rec}</div>`;
+    card.querySelector(".avatar").onclick = () => openEdit(r.id);
+    card.querySelector(".nm").onclick = () => openEdit(r.id);
+    card.querySelector(".x").onclick = (e) => { e.stopPropagation(); removeRacer(r.id); };
+    grid.appendChild(card);
+  });
+
+  if (racers.length < 20) {
+    const add = document.createElement("div");
+    add.className = "add-card";
+    add.innerHTML = `<div class="plus">+</div>Add racer`;
+    add.onclick = () => openEdit(null);
+    grid.appendChild(add);
+  }
+  updateRaceBtn();
+}
+
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+
+function removeRacer(id) {
+  racers = racers.filter(r => r.id !== id);
+  saveRacers(); renderRacers();
+}
+
+function updateRaceBtn() {
+  $("#raceTab").style.opacity = racers.length >= 2 ? "1" : ".45";
+  $("#pickerTab").style.opacity = racers.length >= 2 ? "1" : ".45";
+}
+
+/* ===================== EDIT / ADD MODAL ===================== */
+let editingId = null;
+let pendingImg = null;
+
+function openEdit(id) {
+  editingId = id;
+  const r = id ? racers.find(x => x.id === id) : null;
+  pendingImg = r ? r.img : null;
+  $("#editTitle").textContent = r ? "Edit racer" : "Add racer";
+  $("#editName").value = r ? r.name : "";
+  renderPreview();
+  $("#editModal").classList.add("open");
+  setTimeout(() => { if (!r) $("#editName").focus(); }, 300);
+}
+function renderPreview() {
+  const p = $("#editPreview");
+  if (pendingImg) { p.innerHTML = `<img src="${pendingImg}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`; }
+  else { p.textContent = "🏃"; }
+}
+function closeEdit() { $("#editModal").classList.remove("open"); editingId = null; pendingImg = null; }
+
+$("#editCancel").onclick = closeEdit;
+$("#editModal").onclick = e => { if (e.target === $("#editModal")) closeEdit(); };
+$("#choosePhotoBtn").onclick = () => { $("#fileInput").dataset.target = "racer"; $("#fileInput").click(); };
+
+$("#fileInput").onchange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const target = e.target.dataset.target;
+  const dataUrl = await resizeImage(file, 256);
+  if (target === "racer") { pendingImg = dataUrl; renderPreview(); }
+  e.target.value = "";
+};
+
+$("#editSave").onclick = () => {
+  const name = $("#editName").value.trim() || `Racer ${racers.length + 1}`;
+  if (editingId) {
+    const r = racers.find(x => x.id === editingId);
+    r.name = name; r.img = pendingImg;
+  } else {
+    if (racers.length >= 20) { closeEdit(); return; }
+    racers.push({ id: uid(), name, img: pendingImg, wins: 0, podiums: 0, races: 0 });
+  }
+  saveRacers(); renderRacers(); closeEdit();
+};
+
+/* Resize/compress images so localStorage stays small */
+function resizeImage(file, size) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        const scale = Math.max(size / img.width, size / img.height);
+        const w = img.width * scale, h = img.height * scale;
+        ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+        resolve(canvas.toDataURL("image/jpeg", 0.82));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ===================== QUICK ACTIONS ===================== */
+$("#shuffleBtn").onclick = () => {
+  for (let i = racers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [racers[i], racers[j]] = [racers[j], racers[i]];
+  }
+  saveRacers(); renderRacers(); beep(520, .05);
+};
+$("#clearBtn").onclick = () => {
+  if (racers.length && confirm("Remove all racers? Their stats will be lost.")) {
+    racers = []; saveRacers(); renderRacers();
+  }
+};
+
+/* ===================== SAVED PRESET GROUPS ===================== */
+$("#savePresetBtn").onclick = () => {
+  if (racers.length < 1) { alert("Add some racers first, then save them as a group."); return; }
+  const name = prompt("Name this group (e.g. \"The Crew\"):", "");
+  if (name === null) return;
+  const clean = name.trim() || `Group ${presets.length + 1}`;
+  // store only name + photo, not win/stat records — a preset is a reusable roster
+  const snapshot = racers.map(r => ({ name: r.name, img: r.img || null }));
+  const existing = presets.find(p => p.name.toLowerCase() === clean.toLowerCase());
+  if (existing) {
+    if (!confirm(`A group called "${existing.name}" exists. Overwrite it?`)) return;
+    existing.racers = snapshot; existing.ts = Date.now();
+  } else {
+    presets.unshift({ id: uid(), name: clean, ts: Date.now(), racers: snapshot });
+  }
+  savePresets(); renderPresets(); beep(640, .06); beep(840, .08);
+};
+
+function renderPresets() {
+  const panel = $("#presetsPanel"), list = $("#presetList");
+  panel.style.display = presets.length ? "block" : "none";
+  $("#presetCount").textContent = presets.length;
+  list.innerHTML = presets.map(p => {
+    const thumbs = p.racers.slice(0, 4).map(r =>
+      r.img ? `<img src="${r.img}" alt="">` : `<div class="ph"></div>`
+    ).join("");
+    const more = p.racers.length > 4 ? `<div class="more">+${p.racers.length - 4}</div>` : "";
+    return `<div class="preset-row" data-id="${p.id}">
+      <div class="preset-thumbs">${thumbs}${more}</div>
+      <div class="preset-info">
+        <div class="pnm">${escapeHtml(p.name)}</div>
+        <div class="psub">${p.racers.length} racer${p.racers.length === 1 ? "" : "s"}</div>
+      </div>
+      <div class="preset-btns">
+        <button class="load" data-load="${p.id}" title="Load group">▶</button>
+        <button data-del="${p.id}" title="Delete group">🗑</button>
+      </div>
+    </div>`;
+  }).join("");
+  list.querySelectorAll("[data-load]").forEach(b => b.onclick = () => loadPreset(b.dataset.load));
+  list.querySelectorAll("[data-del]").forEach(b => b.onclick = () => deletePreset(b.dataset.del));
+}
+
+function loadPreset(id) {
+  const p = presets.find(x => x.id === id);
+  if (!p) return;
+  const replace = racers.length === 0 || confirm(`Load "${p.name}"?\n\nOK = replace current racers\nCancel = add them to the current list`);
+  // matching names keep their existing stats; brand-new racers start fresh
+  const fresh = p.racers.slice(0, 20).map(r => {
+    const prior = !replace && racers.find(x => x.name === r.name);
+    return { id: uid(), name: r.name, img: r.img,
+      wins: prior?.wins || 0, podiums: prior?.podiums || 0, races: prior?.races || 0 };
+  });
+  if (replace) racers = fresh;
+  else racers = [...racers, ...fresh].slice(0, 20);
+  saveRacers(); renderRacers(); beep(720, .07);
+}
+
+function deletePreset(id) {
+  const p = presets.find(x => x.id === id);
+  if (p && confirm(`Delete saved group "${p.name}"? This won't affect your current racers.`)) {
+    presets = presets.filter(x => x.id !== id);
+    savePresets(); renderPresets();
+  }
+}
+
+/* ===================== SETTINGS UI ===================== */
+const PRESET_DURS = [10, 20, 30, 60];
+function syncDurSeg() {
+  const isPreset = PRESET_DURS.includes(settings.duration);
+  $$("#durSeg button").forEach(b => {
+    if (b.dataset.dur === "custom") {
+      b.classList.toggle("on", !isPreset);
+      b.textContent = isPreset ? "⏱ Custom" : `⏱ ${settings.duration}s`;
+    } else {
+      b.classList.toggle("on", +b.dataset.dur === settings.duration);
+    }
+  });
+}
+function initSettings() {
+  $$("#durSeg button").forEach(b => {
+    if (b.dataset.dur === "custom") {
+      b.onclick = () => {
+        const cur = PRESET_DURS.includes(settings.duration) ? "" : settings.duration;
+        const val = prompt("Race length in seconds (5–600):", cur || "45");
+        if (val === null) return;
+        let n = Math.round(parseFloat(val));
+        if (!isFinite(n)) return;
+        n = Math.max(5, Math.min(600, n));
+        settings.duration = n; saveSettings(); syncDurSeg(); beep(560, .05);
+      };
+    } else {
+      b.onclick = () => { settings.duration = +b.dataset.dur; saveSettings(); syncDurSeg(); };
+    }
+  });
+  syncDurSeg();
+  $$("#themeSeg button").forEach(b => {
+    b.classList.toggle("on", b.dataset.th === settings.theme);
+    b.onclick = () => { settings.theme = b.dataset.th; saveSettings(); $$("#themeSeg button").forEach(x => x.classList.toggle("on", x === b)); };
+  });
+  setSwitch("#eventsSwitch", settings.events, v => { settings.events = v; saveSettings(); });
+  setSwitch("#soundSwitch", settings.sound, v => { settings.sound = v; saveSettings(); });
+  $("#bgClearBtn").style.display = settings.bg ? "block" : "none";
+  $("#bgUploadBtn").onclick = () => { $("#bgFileInput").click(); };
+  $("#bgFileInput").onchange = async e => {
+    const file = e.target.files[0]; if (!file) return;
+    settings.bg = await resizeImage(file, 800);
+    saveSettings(); $("#bgClearBtn").style.display = "block"; e.target.value = "";
+    beep(440, .05);
+  };
+  $("#bgClearBtn").onclick = () => { settings.bg = null; saveSettings(); $("#bgClearBtn").style.display = "none"; };
+}
+function setSwitch(sel, val, cb) {
+  const el = $(sel);
+  el.classList.toggle("on", val);
+  el.onclick = () => { const nv = !el.classList.contains("on"); el.classList.toggle("on", nv); cb(nv); };
+}
+
+/* ===================== NAVIGATION ===================== */
+$$(".tab[data-view]").forEach(t => {
+  t.onclick = () => {
+    $$(".tab").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    $$(".view").forEach(v => v.classList.remove("active"));
+    $(`#view-${t.dataset.view}`).classList.add("active");
+    if (t.dataset.view === "stats") renderStats();
+    if (t.dataset.view === "history") renderHistory();
+  };
+});
+$("#raceTab").onclick = () => { if (racers.length >= 2) startRace(); };
+$("#pickerTab").onclick = () => { if (racers.length >= 2) openPicker(); };
+
+/* ===================== SOUND ENGINE ===================== */
+let audioCtx = null;
+function ac() {
+  if (!settings.sound) return null;
+  if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; } }
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+function beep(freq, dur, type = "sine", vol = 0.12) {
+  const ctx = ac(); if (!ctx) return;
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(vol, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(); o.stop(ctx.currentTime + dur);
+}
+function fanfare() {
+  const ctx = ac(); if (!ctx) return;
+  const notes = [523, 659, 784, 1047, 784, 1047, 1319];
+  notes.forEach((n, i) => setTimeout(() => beep(n, 0.32, "triangle", 0.14), i * 130));
+}
+function crowdWhoosh() { beep(180, 0.4, "sawtooth", 0.05); }
+
+/* ===================== CONFETTI ===================== */
+const confettiCanvas = $("#confetti");
+const cctx = confettiCanvas.getContext("2d");
+let confettiParticles = [], confettiRAF = null;
+function sizeConfetti() { confettiCanvas.width = innerWidth; confettiCanvas.height = innerHeight; }
+addEventListener("resize", sizeConfetti); sizeConfetti();
+function launchConfetti(duration = 3500) {
+  confettiCanvas.classList.add("on");
+  const colors = ["#ff3d71", "#00e5c0", "#ffd23f", "#34d97b", "#7a5cff", "#ff8a3d"];
+  confettiParticles = [];
+  for (let i = 0; i < 160; i++) {
+    confettiParticles.push({
+      x: Math.random() * innerWidth, y: -20 - Math.random() * innerHeight * 0.5,
+      r: 4 + Math.random() * 7, c: colors[(Math.random() * colors.length) | 0],
+      vx: (Math.random() - 0.5) * 3, vy: 2 + Math.random() * 4,
+      rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.3,
+      shape: Math.random() > 0.5 ? "rect" : "circ"
+    });
+  }
+  const start = performance.now();
+  cancelAnimationFrame(confettiRAF);
+  function frame(now) {
+    cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    confettiParticles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.vr;
+      cctx.save(); cctx.translate(p.x, p.y); cctx.rotate(p.rot); cctx.fillStyle = p.c;
+      if (p.shape === "rect") cctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.6);
+      else { cctx.beginPath(); cctx.arc(0, 0, p.r / 2, 0, 6.28); cctx.fill(); }
+      cctx.restore();
+    });
+    if (now - start < duration) confettiRAF = requestAnimationFrame(frame);
+    else { cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height); confettiCanvas.classList.remove("on"); }
+  }
+  confettiRAF = requestAnimationFrame(frame);
+}
+
+/* ===================== RACE THEMES ===================== */
+const THEMES = {
+  track:    { grad: "linear-gradient(180deg,#d94f3a,#a83422)", lane: "#c0492f", line: "rgba(255,255,255,.18)", emoji: "🏟" },
+  beach:    { grad: "linear-gradient(180deg,#36c5e0,#f5d99b 70%)", lane: "#e8c878", line: "rgba(255,255,255,.3)", emoji: "🏖" },
+  space:    { grad: "linear-gradient(180deg,#0a0a2e,#1a0a3e)", lane: "#241a4a", line: "rgba(160,140,255,.2)", emoji: "🚀", stars: true },
+  football: { grad: "linear-gradient(180deg,#2e8b3d,#216b2c)", lane: "#2c7e38", line: "rgba(255,255,255,.35)", emoji: "🏈" },
+  golf:     { grad: "linear-gradient(180deg,#7ec850,#4f9e2f)", lane: "#5fae37", line: "rgba(255,255,255,.2)", emoji: "⛳" },
+  casino:   { grad: "linear-gradient(180deg,#1a0e2e,#3a1030)", lane: "#2e1440", line: "rgba(255,210,63,.25)", emoji: "🎰" }
+};
+const EVENTS = [
+  { txt: "🚀 Rocket boost!", spd: 2.2, dur: 1.4, kind: "boost" },
+  { txt: "🍌 Slipped on a banana!", spd: 0.35, dur: 1.4, kind: "slow" },
+  { txt: "⚡ Caffeine surge!", spd: 1.9, dur: 1.6, kind: "boost" },
+  { txt: "💤 Took a nap...", spd: 0.4, dur: 1.5, kind: "slow" },
+  { txt: "🌪 Tailwind!", spd: 1.7, dur: 2, kind: "boost" },
+  { txt: "🪨 Tripped on a rock", spd: 0.5, dur: 1.2, kind: "slow" }
+];
+
+/* ===================== RACE ENGINE ===================== */
+let raceData = null;
+let raceRAF = null;
+
+function startRace() {
+  const stage = $("#raceStage");
+  const theme = THEMES[settings.theme] || THEMES.track;
+  // background
+  const bg = $("#raceBg");
+  if (settings.bg) { bg.style.background = `url(${settings.bg}) center/cover no-repeat`; }
+  else { bg.style.background = theme.grad; }
+  document.querySelector('meta[name=theme-color]').setAttribute("content", "#0b0e1a");
+
+  // build runners — each assigned a randomized target finish ORDER (equal chance)
+  const order = [...racers.keys()];
+  for (let i = order.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [order[i], order[j]] = [order[j], order[i]]; }
+  // order[k] = index into racers that finishes in place k (0 = winner)
+
+  const trackWrap = $("#trackWrap");
+  trackWrap.innerHTML = "";
+  const runners = racers.map((r, i) => {
+    const lane = document.createElement("div");
+    lane.className = "lane";
+    lane.style.background = theme.lane;
+    lane.style.setProperty("--lane-line", theme.line);
+    lane.innerHTML = `
+      <div class="name-tag">${escapeHtml(r.name)}</div>
+      <div class="finish"></div>
+      <div class="runner" id="runner-${i}">
+        ${r.img ? `<img src="${r.img}" alt="">` : `<img src="${placeholderImg(r.name)}" alt="">`}
+        <div class="pos-badge">${i + 1}</div>
+      </div>`;
+    trackWrap.appendChild(lane);
+    return {
+      racer: r, idx: i, el: lane.querySelector(".runner"), badge: lane.querySelector(".pos-badge"),
+      prog: 0, lastBadge: 0, noise: Math.random() * 100,
+      phase: Math.random() * Math.PI * 2, phase2: Math.random() * Math.PI * 2,
+      event: null, eventMul: 1, finished: false, finishTime: 0
+    };
+  });
+
+  // Each racer reaches the line at a slightly different scheduled time so the
+  // predetermined order holds, but movement is driven by an integrated velocity
+  // (always forward) rather than a position formula — smoother, and placement is
+  // read straight off actual on-track position so screen and results never disagree.
+  const dur = settings.duration;
+  order.forEach((racerIdx, place) => {
+    const run = runners[racerIdx];
+    run.targetPlace = place;
+    // winner finishes around 92% of duration, last around 99%; tight enough to stay exciting
+    run.finishAt = dur * (0.92 + (place / Math.max(1, racers.length - 1)) * 0.07);
+  });
+
+  raceData = { runners, theme, dur, startTs: 0, elapsed: 0, lastTs: 0, running: false, results: [], laneW: 0 };
+
+  stage.classList.add("open");
+  $("#finishScreen").classList.remove("show");
+  requestAnimationFrame(() => { measureLanes(); runCountdown(); });
+}
+
+function measureLanes() {
+  const firstLane = $("#trackWrap .lane");
+  if (firstLane) raceData.laneW = firstLane.clientWidth - 56; // minus runner width + finish
+}
+const _phCache = {};
+function placeholderImg(name) {
+  if (_phCache[name]) return _phCache[name];
+  const c = document.createElement("canvas"); c.width = c.height = 92;
+  const x = c.getContext("2d");
+  const hue = (name.charCodeAt(0) * 37) % 360;
+  x.fillStyle = `hsl(${hue},65%,55%)`; x.fillRect(0, 0, 92, 92);
+  x.fillStyle = "#fff"; x.font = "bold 46px sans-serif"; x.textAlign = "center"; x.textBaseline = "middle";
+  x.fillText((name[0] || "?").toUpperCase(), 46, 50);
+  return _phCache[name] = c.toDataURL();
+}
+
+function runCountdown() {
+  const cd = $("#countdown"), num = $("#cdNum");
+  cd.classList.add("show");
+  let n = 3;
+  const tick = () => {
+    if (n > 0) { num.textContent = n; num.style.animation = "none"; void num.offsetWidth; num.style.animation = "cdPulse .85s ease"; beep(440 + (3 - n) * 80, 0.18, "square", 0.13); n--; setTimeout(tick, 850); }
+    else { num.textContent = "GO!"; num.style.animation = "none"; void num.offsetWidth; num.style.animation = "cdPulse .85s ease"; beep(880, 0.3, "square", 0.16); crowdWhoosh(); setTimeout(() => { cd.classList.remove("show"); beginRun(); }, 700); }
+  };
+  tick();
+}
+
+function beginRun() {
+  raceData.running = true;
+  raceData.startTs = performance.now();
+  raceData.lastTs = raceData.startTs;
+  raceData.lastEventCheck = 0;
+  raceRAF = requestAnimationFrame(raceFrame);
+}
+
+function raceFrame(now) {
+  const rd = raceData;
+  if (!rd || !rd.running) return;
+  const elapsed = (now - rd.startTs) / 1000;
+  let dt = (now - rd.lastTs) / 1000;
+  rd.lastTs = now;
+  // clamp dt so a paused tab / dropped frames can't teleport runners
+  if (dt > 0.05) dt = 0.05;
+  rd.elapsed = elapsed;
+  $("#raceTimer").textContent = elapsed.toFixed(1);
+
+  // random events
+  if (settings.events && elapsed - rd.lastEventCheck > 0.9 && elapsed < rd.dur - 2.5) {
+    rd.lastEventCheck = elapsed;
+    if (Math.random() < 0.28) triggerEvent(now);
+  }
+
+  rd.runners.forEach(run => {
+    if (run.finished) return;
+
+    // Average speed needed to reach the line on schedule (progress per second).
+    const avgSpeed = 1 / run.finishAt;
+    // Organic pace: two slow sine waves give natural surge/ease without ever
+    // dropping below zero, so the runner only ever moves FORWARD (no jitter).
+    const surge =
+      1
+      + 0.42 * Math.sin(elapsed * 1.5 + run.phase)
+      + 0.22 * Math.sin(elapsed * 3.7 + run.phase2);
+    // ease the field out of the gate so nobody starts at full pace
+    const launch = Math.min(1, elapsed / 0.8);
+    // event multiplier eases toward its target so boosts feel smooth, not snappy
+    let targetMul = 1;
+    if (run.event && now < run.event.until) targetMul = run.event.spd;
+    else if (run.event) { run.event = null; run.el.classList.remove("boost", "slow"); }
+    run.eventMul += (targetMul - run.eventMul) * Math.min(1, dt * 6);
+
+    const speed = avgSpeed * Math.max(0.15, surge) * launch * run.eventMul;
+    run.prog += speed * dt;                 // integrate — monotonic, always forward
+
+    if (run.prog >= 1) {
+      run.prog = 1;
+      run.finished = true;
+      run.finishTime = elapsed;
+      rd.results.push(run);                 // placement = actual crossing order
+      run.el.classList.add("done");
+      if (rd.results.length === 1) fanfare();
+    }
+    // round to whole px to avoid sub-pixel shimmer; translate3d for GPU compositing
+    run.el.style.transform = `translate3d(${Math.round(run.prog * rd.laneW)}px, -50%, 0)`;
+  });
+
+  updateLiveRankings();
+
+  // end check — everyone home, or a safety cap a bit past scheduled duration
+  if (rd.results.length >= rd.runners.length || elapsed > rd.dur + 2.5) {
+    rd.runners.filter(r => !r.finished)
+      .sort((a, b) => b.prog - a.prog)      // stragglers ranked by real position
+      .forEach(r => { r.finished = true; r.finishTime = elapsed; r.prog = Math.min(r.prog, 1); rd.results.push(r); });
+    finishRace();
+    return;
+  }
+  raceRAF = requestAnimationFrame(raceFrame);
+}
+
+function triggerEvent(now) {
+  const rd = raceData;
+  const active = rd.runners.filter(r => !r.finished && !r.event);
+  if (!active.length) return;
+  const run = active[(Math.random() * active.length) | 0];
+  const ev = EVENTS[(Math.random() * EVENTS.length) | 0];
+  run.event = { ...ev, until: now + ev.dur * 1000 };
+  run.el.classList.add(ev.kind);
+  // floating fx
+  const fx = document.createElement("div"); fx.className = "fx"; fx.textContent = ev.txt.split(" ")[0];
+  run.el.appendChild(fx); setTimeout(() => fx.remove(), 1000);
+  // banner
+  const banner = $("#eventBanner");
+  banner.textContent = `${escapeHtml(run.racer.name)}: ${ev.txt}`;
+  banner.classList.remove("show"); void banner.offsetWidth; banner.classList.add("show");
+  beep(ev.kind === "boost" ? 700 : 220, 0.25, ev.kind === "boost" ? "triangle" : "sawtooth", 0.1);
+}
+
+function updateLiveRankings() {
+  const rd = raceData;
+  const sorted = [...rd.runners].sort((a, b) => {
+    if (a.finished && b.finished) return a.finishTime - b.finishTime;
+    if (a.finished) return -1; if (b.finished) return 1;
+    return b.prog - a.prog;
+  });
+  sorted.forEach((run, i) => {
+    const rank = i + 1;
+    if (run.lastBadge !== rank) { run.badge.textContent = rank; run.lastBadge = rank; } // skip no-op writes
+  });
+  // leader pill — only rebuild when the leader changes
+  const leader = sorted[0];
+  if (rd.lastLeader !== leader) {
+    rd.lastLeader = leader;
+    $("#leadName").textContent = leader.racer.name;
+    const pill = $("#leadPill");
+    let img = pill.querySelector("img");
+    if (!img) { img = document.createElement("img"); pill.insertBefore(img, pill.children[1]); }
+    img.src = leader.racer.img || placeholderImg(leader.racer.name);
+  }
+}
+
+
+function finishRace() {
+  cancelAnimationFrame(raceRAF);
+  raceData.running = false;
+  const results = raceData.results;
+  // record stats
+  results.forEach((run, place) => {
+    run.racer.races = (run.racer.races || 0) + 1;
+    if (place === 0) run.racer.wins = (run.racer.wins || 0) + 1;
+    if (place < 3) run.racer.podiums = (run.racer.podiums || 0) + 1;
+  });
+  saveRacers();
+  // history
+  const podium = results.slice(0, 3).map(r => ({ name: r.racer.name, img: r.racer.img || placeholderImg(r.racer.name) }));
+  history.unshift({ ts: Date.now(), winner: podium[0], podium, theme: settings.theme });
+  history = history.slice(0, 50);
+  saveHistory();
+  setTimeout(() => showFinish(results), 600);
+}
+
+/* ===================== PHOTO FINISH SCREEN ===================== */
+function showFinish(results) {
+  const fs = $("#finishScreen");
+  const winner = results[0].racer;
+  $("#winnerHeadline").innerHTML = `🏆 ${escapeHtml(winner.name)} wins!`;
+
+  const img = i => results[i] ? (results[i].racer.img || placeholderImg(results[i].racer.name)) : "";
+  const nm = i => results[i] ? escapeHtml(results[i].racer.name) : "";
+
+  // podium order: 2nd, 1st, 3rd
+  const podium = $("#podium");
+  podium.innerHTML = `
+    ${results[1] ? `<div class="pod-col p2"><div class="medal">🥈</div><img class="pic" src="${img(1)}"><div class="pn">${nm(1)}</div><div class="pod-base">2</div></div>` : ""}
+    <div class="pod-col p1"><div class="medal">🥇</div><img class="pic" src="${img(0)}"><div class="pn">${nm(0)}</div><div class="pod-base">1</div></div>
+    ${results[2] ? `<div class="pod-col p3"><div class="medal">🥉</div><img class="pic" src="${img(2)}"><div class="pn">${nm(2)}</div><div class="pod-base">3</div></div>` : ""}`;
+
+  const fr = $("#fullResults");
+  fr.innerHTML = results.map((run, i) => `
+    <div class="res-row">
+      <div class="rank">${i + 1}</div>
+      <img src="${run.racer.img || placeholderImg(run.racer.name)}">
+      <div class="rnm">${escapeHtml(run.racer.name)}</div>
+    </div>`).join("");
+
+  fs.classList.add("show");
+  launchConfetti(4000);
+  fanfare();
+}
+
+$("#rematchBtn").onclick = () => { $("#raceStage").classList.remove("open"); setTimeout(startRace, 120); };
+$("#finishClose").onclick = closeRace;
+$("#raceClose").onclick = closeRace;
+function closeRace() {
+  cancelAnimationFrame(raceRAF);
+  if (raceData) raceData.running = false;
+  $("#raceStage").classList.remove("open");
+  $("#finishScreen").classList.remove("show");
+  renderRacers();
+}
+
+/* ===================== SHARE AS IMAGE ===================== */
+$("#shareBtn").onclick = async () => {
+  const results = raceData.results;
+  const c = document.createElement("canvas");
+  const W = 1080, H = 1350; c.width = W; c.height = H;
+  const x = c.getContext("2d");
+  // bg
+  const g = x.createLinearGradient(0, 0, W, H);
+  g.addColorStop(0, "#171c33"); g.addColorStop(1, "#0b0e1a");
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.fillStyle = "#ffd23f"; x.font = "800 40px sans-serif"; x.textAlign = "center";
+  x.fillText("🏁 FACERACE", W / 2, 100);
+  x.fillStyle = "#fff"; x.font = "800 64px sans-serif";
+  x.fillText(`${results[0].racer.name} wins!`, W / 2, 185);
+
+  const loadImg = src => new Promise(res => { const im = new Image(); im.crossOrigin = "anonymous"; im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
+  const drawCircle = (im, cx, cy, r, ring) => {
+    x.save(); x.beginPath(); x.arc(cx, cy, r, 0, 6.28); x.closePath();
+    x.lineWidth = 10; x.strokeStyle = ring; x.stroke(); x.clip();
+    if (im) x.drawImage(im, cx - r, cy - r, r * 2, r * 2); else { x.fillStyle = "#333"; x.fillRect(cx - r, cy - r, r * 2, r * 2); }
+    x.restore();
+  };
+  const top3 = results.slice(0, 3);
+  const rings = ["#ffd23f", "#cfd6e6", "#e08a4e"];
+  const medals = ["🥇", "🥈", "🥉"];
+  const positions = [{ cx: W / 2, cy: 430, r: 150 }, { cx: W / 2 - 320, cy: 520, r: 110 }, { cx: W / 2 + 320, cy: 520, r: 110 }];
+  for (let i = 0; i < top3.length; i++) {
+    const im = await loadImg(top3[i].racer.img || placeholderImg(top3[i].racer.name));
+    const p = positions[i];
+    drawCircle(im, p.cx, p.cy, p.r, rings[i]);
+    x.fillStyle = "#fff"; x.font = "800 38px sans-serif"; x.textAlign = "center";
+    x.fillText(`${medals[i]} ${top3[i].racer.name}`, p.cx, p.cy + p.r + 50);
+  }
+  // full list
+  x.textAlign = "left"; let yy = 760;
+  x.fillStyle = "#9aa3cf"; x.font = "700 28px sans-serif";
+  x.fillText("FINAL STANDINGS", 120, yy); yy += 50;
+  results.slice(0, 10).forEach((run, i) => {
+    x.fillStyle = i < 3 ? "#fff" : "#cdd3ef"; x.font = `${i < 3 ? "800" : "600"} 34px sans-serif`;
+    x.fillText(`${i + 1}.  ${run.racer.name}`, 120, yy); yy += 56;
+  });
+  x.fillStyle = "#ff3d71"; x.font = "700 26px sans-serif"; x.textAlign = "center";
+  x.fillText("Made with FaceRace", W / 2, H - 60);
+
+  c.toBlob(async blob => {
+    const file = new File([blob], "facerace-result.png", { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: "FaceRace result" }); return; } catch {}
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = "facerace-result.png"; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }, "image/png");
+  beep(660, 0.1);
+};
+
+/* ===================== STATS ===================== */
+function renderStats() {
+  const totalRaces = history.length;
+  const totalPodiums = racers.reduce((s, r) => s + (r.podiums || 0), 0);
+  const champ = [...racers].sort((a, b) => (b.wins || 0) - (a.wins || 0))[0];
+  $("#statSummary").innerHTML = `
+    <div class="stat-card"><div class="v">${totalRaces}</div><div class="l">Races run</div></div>
+    <div class="stat-card"><div class="v">${racers.length}</div><div class="l">Active racers</div></div>
+    <div class="stat-card"><div class="v">${totalPodiums}</div><div class="l">Podium finishes</div></div>
+    <div class="stat-card"><div class="v">${champ && champ.wins ? escapeHtml(champ.name) : "—"}</div><div class="l">Top champion</div></div>`;
+
+  const lb = $("#leaderboard");
+  const ranked = [...racers].sort((a, b) => {
+    const wpA = a.races ? a.wins / a.races : 0, wpB = b.races ? b.wins / b.races : 0;
+    return (b.wins - a.wins) || (wpB - wpA);
+  });
+  if (!ranked.length) { lb.innerHTML = `<div class="empty"><div class="big">📊</div><p>Run a race to start tracking wins, podiums, and win rates.</p></div>`; return; }
+  lb.innerHTML = ranked.map((r, i) => {
+    const pct = r.races ? Math.round((r.wins / r.races) * 100) : 0;
+    const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
+    return `<div class="lb-row">
+      <div class="lb-rank">${medal}</div>
+      <img src="${r.img || placeholderImg(r.name)}">
+      <div class="lb-info"><div class="lb-name">${escapeHtml(r.name)}</div>
+      <div class="lb-sub">${r.wins} wins · ${r.podiums} podiums · ${r.races} races</div></div>
+      <div class="lb-pct"><div class="pp">${pct}%</div><div class="ps">win rate</div></div>
+    </div>`;
+  }).join("");
+}
+
+/* ===================== HISTORY ===================== */
+function renderHistory() {
+  const list = $("#historyList");
+  if (!history.length) { list.innerHTML = `<div class="empty"><div class="big">📜</div><p>Past races and their podiums will show up here.</p></div>`; return; }
+  list.innerHTML = history.map(h => {
+    const d = new Date(h.ts);
+    const when = d.toLocaleDateString([], { month: "short", day: "numeric" }) + " · " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    const podiumPics = h.podium.map((p, i) => `<span title="${escapeHtml(p.name)}">${["🥇","🥈","🥉"][i]}${escapeHtml(p.name)}</span>`).join(" ");
+    return `<div class="hist-row">
+      <img src="${h.winner.img}">
+      <div class="hi"><div class="hn">${escapeHtml(h.winner.name)}</div>
+      <div class="hd">${when} · ${(THEMES[h.theme]||{}).emoji||"🏁"} ${h.theme||""}</div></div>
+      <div class="hp">${podiumPics}</div>
+    </div>`;
+  }).join("");
+}
+$("#clearHistBtn").onclick = () => { if (history.length && confirm("Clear race history?")) { history = []; saveHistory(); renderHistory(); } };
+
+/* ===================== WHEEL PICKER ===================== */
+const wheelCanvas = $("#wheelCanvas");
+const wctx = wheelCanvas.getContext("2d");
+let wheelAngle = 0, wheelSpinning = false, wheelImgs = {};
+
+function openPicker() {
+  $("#pickerStage").classList.add("open");
+  $("#pickerResult").innerHTML = "";
+  preloadWheelImgs().then(drawWheel);
+}
+$("#pickerClose").onclick = () => $("#pickerStage").classList.remove("open");
+
+function preloadWheelImgs() {
+  return Promise.all(racers.map(r => new Promise(res => {
+    if (wheelImgs[r.id]) return res();
+    const im = new Image(); im.onload = () => { wheelImgs[r.id] = im; res(); }; im.onerror = () => res();
+    im.src = r.img || placeholderImg(r.name);
+  })));
+}
+
+function drawWheel() {
+  const n = racers.length, size = wheelCanvas.width, cx = size / 2, cy = size / 2, R = size / 2 - 6;
+  wctx.clearRect(0, 0, size, size);
+  const seg = (Math.PI * 2) / n;
+  const palette = ["#ff3d71", "#00e5c0", "#ffd23f", "#7a5cff", "#34d97b", "#ff8a3d", "#3da5ff", "#ff5ec4"];
+  for (let i = 0; i < n; i++) {
+    const a0 = wheelAngle + i * seg, a1 = a0 + seg;
+    wctx.beginPath(); wctx.moveTo(cx, cy); wctx.arc(cx, cy, R, a0, a1); wctx.closePath();
+    wctx.fillStyle = palette[i % palette.length]; wctx.fill();
+    wctx.strokeStyle = "rgba(0,0,0,.25)"; wctx.lineWidth = 3; wctx.stroke();
+    // avatar
+    const mid = a0 + seg / 2, ir = R * 0.68;
+    const ix = cx + Math.cos(mid) * ir, iy = cy + Math.sin(mid) * ir;
+    const im = wheelImgs[racers[i].id];
+    const ar = Math.min(54, R * seg * 0.34);
+    if (im) {
+      wctx.save(); wctx.beginPath(); wctx.arc(ix, iy, ar, 0, 6.28); wctx.closePath();
+      wctx.lineWidth = 4; wctx.strokeStyle = "#fff"; wctx.stroke(); wctx.clip();
+      wctx.drawImage(im, ix - ar, iy - ar, ar * 2, ar * 2); wctx.restore();
+    }
+  }
+}
+
+$("#spinBtn").onclick = () => {
+  if (wheelSpinning || racers.length < 2) return;
+  wheelSpinning = true;
+  $("#pickerResult").innerHTML = "";
+  const n = racers.length, seg = (Math.PI * 2) / n;
+  const winnerIdx = (Math.random() * n) | 0;
+  // pointer at top (-90deg = -PI/2). want winner segment center under pointer.
+  const targetMid = -Math.PI / 2;
+  const segCenter = winnerIdx * seg + seg / 2;
+  const spins = 5 + Math.floor(Math.random() * 3);
+  const finalAngle = (spins * Math.PI * 2) + (targetMid - segCenter);
+  const startAngle = wheelAngle % (Math.PI * 2);
+  const dur = 4200, start = performance.now();
+  let lastTick = 0;
+  const ease = t => 1 - Math.pow(1 - t, 3.2);
+  function spin(now) {
+    const t = Math.min((now - start) / dur, 1);
+    wheelAngle = startAngle + (finalAngle - startAngle) * ease(t);
+    drawWheel();
+    const seg2 = Math.floor(wheelAngle / seg);
+    if (seg2 !== lastTick) { lastTick = seg2; beep(800, 0.03, "square", 0.06); }
+    if (t < 1) requestAnimationFrame(spin);
+    else {
+      wheelSpinning = false;
+      const w = racers[winnerIdx];
+      $("#pickerResult").innerHTML = `<img class="winner-pic" src="${w.img || placeholderImg(w.name)}"><div class="winner-name">🎉 ${escapeHtml(w.name)}</div>`;
+      launchConfetti(3000); fanfare();
+    }
+  }
+  requestAnimationFrame(spin);
+};
+
+/* ===================== INIT ===================== */
+function init() {
+  load();
+  initTheme();
+  initSettings();
+  renderRacers();
+  renderPresets();
+  // unlock audio on first touch
+  document.body.addEventListener("touchstart", () => ac(), { once: true });
+  document.body.addEventListener("click", () => ac(), { once: true });
+}
+init();
+</script>
+</body>
+</html>
