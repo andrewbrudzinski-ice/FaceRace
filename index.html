@@ -425,6 +425,26 @@ input { font-family: inherit; }
 .picker-result .winner-name { font-size: 22px; font-weight: 800; }
 .picker-close { position: absolute; top: calc(var(--safe-top) + 16px); right: 16px; }
 
+/* ============ HOW TO PLAY ============ */
+.htp-steps { display: flex; flex-direction: column; gap: 14px; margin: 4px 0 2px; }
+.htp-step { display: flex; gap: 13px; align-items: flex-start; }
+.htp-step .num {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--accent), #ff6f97); color: #fff;
+  display: grid; place-items: center; font-size: 16px; font-weight: 800;
+  box-shadow: 0 6px 14px rgba(255,61,113,.35);
+}
+.htp-step .body { flex: 1; min-width: 0; }
+.htp-step .body h4 { margin: 3px 0 3px; font-size: 14.5px; font-weight: 800; }
+.htp-step .body p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); font-weight: 600; }
+.htp-fair {
+  margin-top: 16px; padding: 12px 14px; border-radius: 14px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  font-size: 12px; line-height: 1.5; color: var(--muted); font-weight: 600;
+}
+.htp-fair b { color: var(--text); }
+.modal.scroll { max-height: 86vh; overflow-y: auto; }
+
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -443,6 +463,7 @@ input { font-family: inherit; }
       </div>
     </div>
     <div class="head-actions">
+      <button class="icon-btn" id="helpBtn" aria-label="How to play">❓</button>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">🌙</button>
     </div>
   </header>
@@ -537,6 +558,54 @@ input { font-family: inherit; }
     <button class="tab" id="raceTab"><span class="ic">🚦</span>Race!</button>
   </div>
 </nav>
+
+<!-- HOW TO PLAY MODAL -->
+<div class="modal-bg" id="helpModal">
+  <div class="modal scroll">
+    <h3>🏁 How to play</h3>
+    <div class="htp-steps">
+      <div class="htp-step">
+        <div class="num">1</div>
+        <div class="body">
+          <h4>Add your racers</h4>
+          <p>On the <b style="color:var(--text)">Setup</b> tab, tap <b style="color:var(--text)">+ Add racer</b> to add 2–20 friends. Give each one a name and a photo — square photos look best as the circular avatars. Tap an avatar any time to edit it.</p>
+        </div>
+      </div>
+      <div class="htp-step">
+        <div class="num">2</div>
+        <div class="body">
+          <h4>Save your crew (optional)</h4>
+          <p>Tap <b style="color:var(--text)">💾 Save</b> to store the current line-up as a reusable group, then load it again later in one tap. Use <b style="color:var(--text)">🔀 Shuffle</b> to mix up the order.</p>
+        </div>
+      </div>
+      <div class="htp-step">
+        <div class="num">3</div>
+        <div class="body">
+          <h4>Set the rules</h4>
+          <p>Pick a race <b style="color:var(--text)">duration</b> and a <b style="color:var(--text)">theme</b> (track, beach, space and more). Toggle <b style="color:var(--text)">random events</b> for surprise boosts &amp; banana peels, flip on <b style="color:var(--text)">sound</b>, or upload your own background.</p>
+        </div>
+      </div>
+      <div class="htp-step">
+        <div class="num">4</div>
+        <div class="body">
+          <h4>Start the race</h4>
+          <p>Hit the <b style="color:var(--text)">🚦 Race!</b> tab. After the countdown, watch everyone sprint to the photo finish. A podium and full results appear at the end — then tap <b style="color:var(--text)">🔁 Rematch</b> or share the result.</p>
+        </div>
+      </div>
+      <div class="htp-step">
+        <div class="num">5</div>
+        <div class="body">
+          <h4>Spin or track stats</h4>
+          <p>Need a quick winner instead of a full race? Use the <b style="color:var(--text)">🎡 Picker</b> wheel. Check the <b style="color:var(--text)">📊 Stats</b> leaderboard and <b style="color:var(--text)">📜 History</b> tabs to see who keeps winning.</p>
+        </div>
+      </div>
+    </div>
+    <div class="htp-fair">🎲 <b>It's all fair.</b> Every racer has an equal chance to win — the finish order is random, so the photos, boosts and banana peels are just for fun.</div>
+    <div class="modal-actions">
+      <button class="btn primary full" id="helpClose">Got it!</button>
+    </div>
+  </div>
+</div>
 
 <!-- EDIT RACER MODAL -->
 <div class="modal-bg" id="editModal">
@@ -638,6 +707,11 @@ $("#themeBtn").onclick = () => {
   localStorage.setItem("pictureRace.theme", next);
   $("#themeBtn").textContent = next === "dark" ? "☀️" : "🌙";
 };
+
+/* ===================== HOW TO PLAY ===================== */
+$("#helpBtn").onclick = () => { $("#helpModal").classList.add("open"); beep(560, .05); };
+$("#helpClose").onclick = () => $("#helpModal").classList.remove("open");
+$("#helpModal").onclick = e => { if (e.target === $("#helpModal")) $("#helpModal").classList.remove("open"); };
 
 /* ===================== RENDER RACERS ===================== */
 function renderRacers() {
