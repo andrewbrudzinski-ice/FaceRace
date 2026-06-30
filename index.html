@@ -720,6 +720,7 @@ $("#themeBtn").onclick = () => {
   document.documentElement.setAttribute("data-theme", next);
   localStorage.setItem("pictureRace.theme", next);
   $("#themeBtn").textContent = next === "dark" ? "☀️" : "🌙";
+  track("appearance_toggle", { mode: next });
 };
 
 /* ===================== HOW TO PLAY ===================== */
@@ -956,15 +957,16 @@ function initSettings() {
         if (!isFinite(n)) return;
         n = Math.max(5, Math.min(600, n));
         settings.duration = n; saveSettings(); syncDurSeg(); beep(560, .05);
+        track("duration_changed", { duration: n, type: "custom" });
       };
     } else {
-      b.onclick = () => { settings.duration = +b.dataset.dur; saveSettings(); syncDurSeg(); };
+      b.onclick = () => { settings.duration = +b.dataset.dur; saveSettings(); syncDurSeg(); track("duration_changed", { duration: settings.duration, type: "preset" }); };
     }
   });
   syncDurSeg();
   $$("#themeSeg button").forEach(b => {
     b.classList.toggle("on", b.dataset.th === settings.theme);
-    b.onclick = () => { settings.theme = b.dataset.th; saveSettings(); $$("#themeSeg button").forEach(x => x.classList.toggle("on", x === b)); };
+    b.onclick = () => { settings.theme = b.dataset.th; saveSettings(); $$("#themeSeg button").forEach(x => x.classList.toggle("on", x === b)); track("race_theme_changed", { theme: settings.theme }); };
   });
   setSwitch("#eventsSwitch", settings.events, v => { settings.events = v; saveSettings(); });
   setSwitch("#soundSwitch", settings.sound, v => { settings.sound = v; saveSettings(); });
