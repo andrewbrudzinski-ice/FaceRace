@@ -691,6 +691,11 @@ const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const uid = () => Math.random().toString(36).slice(2, 9);
 
+/* Google Analytics event helper — sends counts/categories only, never names. */
+function track(name, params) {
+  try { if (typeof gtag === "function") gtag("event", name, params || {}); } catch {}
+}
+
 function load() {
   try { racers = JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { racers = []; }
   try { history = JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch { history = []; }
@@ -815,9 +820,11 @@ $("#editSave").onclick = () => {
   if (editingId) {
     const r = racers.find(x => x.id === editingId);
     r.name = name; r.img = pendingImg;
+    track("racer_edited", { has_photo: !!pendingImg });
   } else {
     if (racers.length >= 20) { closeEdit(); return; }
     racers.push({ id: uid(), name, img: pendingImg, wins: 0, podiums: 0, races: 0 });
+    track("racer_added", { has_photo: !!pendingImg, total: racers.length });
   }
   saveRacers(); renderRacers(); closeEdit();
 };
@@ -873,6 +880,7 @@ $("#savePresetBtn").onclick = () => {
     presets.unshift({ id: uid(), name: clean, ts: Date.now(), racers: snapshot });
   }
   savePresets(); renderPresets(); beep(640, .06); beep(840, .08);
+  track("preset_saved", { racers: snapshot.length });
 };
 
 function renderPresets() {
@@ -913,6 +921,7 @@ function loadPreset(id) {
   if (replace) racers = fresh;
   else racers = [...racers, ...fresh].slice(0, 20);
   saveRacers(); renderRacers(); beep(720, .07);
+  track("preset_loaded", { racers: fresh.length, mode: replace ? "replace" : "append" });
 }
 
 function deletePreset(id) {
@@ -1086,6 +1095,10 @@ let raceData = null;
 let raceRAF = null;
 
 function startRace() {
+  track("race_start", {
+    racers: racers.length, theme: settings.theme, duration: settings.duration,
+    events_on: settings.events, sound_on: settings.sound
+  });
   const stage = $("#raceStage");
   const theme = THEMES[settings.theme] || THEMES.track;
   // background
@@ -1295,6 +1308,7 @@ function finishRace() {
   cancelAnimationFrame(raceRAF);
   raceData.running = false;
   const results = raceData.results;
+  track("race_finish", { racers: results.length, theme: settings.theme, duration: settings.duration });
   // record stats
   results.forEach((run, place) => {
     run.racer.races = (run.racer.races || 0) + 1;
@@ -1339,7 +1353,7 @@ function showFinish(results) {
   fanfare();
 }
 
-$("#rematchBtn").onclick = () => { $("#raceStage").classList.remove("open"); setTimeout(startRace, 120); };
+$("#rematchBtn").onclick = () => { track("rematch"); $("#raceStage").classList.remove("open"); setTimeout(startRace, 120); };
 $("#finishClose").onclick = closeRace;
 $("#raceClose").onclick = closeRace;
 function closeRace() {
@@ -1397,11 +1411,12 @@ $("#shareBtn").onclick = async () => {
   c.toBlob(async blob => {
     const file = new File([blob], "facerace-result.png", { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try { await navigator.share({ files: [file], title: "FaceRace result" }); return; } catch {}
+      try { await navigator.share({ files: [file], title: "FaceRace result" }); track("share_result", { method: "web_share" }); return; } catch {}
     }
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = "facerace-result.png"; a.click();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
+    track("share_result", { method: "download" });
   }, "image/png");
   beep(660, 0.1);
 };
@@ -1500,6 +1515,7 @@ function drawWheel() {
 $("#spinBtn").onclick = () => {
   if (wheelSpinning || racers.length < 2) return;
   wheelSpinning = true;
+  track("picker_spin", { racers: racers.length });
   $("#pickerResult").innerHTML = "";
   const n = racers.length, seg = (Math.PI * 2) / n;
   const winnerIdx = (Math.random() * n) | 0;
