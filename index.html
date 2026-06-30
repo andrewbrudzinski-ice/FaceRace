@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1B5D1PR3MD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1B5D1PR3MD');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0b0e1a">
@@ -445,6 +454,40 @@ input { font-family: inherit; }
 .htp-fair b { color: var(--text); }
 .modal.scroll { max-height: 86vh; overflow-y: auto; }
 
+/* ============ TOAST ============ */
+.toast-wrap {
+  position: fixed; left: 0; right: 0; bottom: calc(96px + var(--safe-bottom)); z-index: 200;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  pointer-events: none; padding: 0 16px;
+}
+.toast {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--line);
+  border-radius: 14px; padding: 11px 16px; font-size: 13px; font-weight: 700;
+  box-shadow: var(--shadow); max-width: 92%; text-align: center; animation: toastIn .25s ease;
+}
+.toast.out { animation: toastOut .3s ease forwards; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(8px); } }
+
+/* ============ STYLED DIALOG ============ */
+.dlg-msg { font-size: 14px; line-height: 1.5; color: var(--muted); font-weight: 600; margin: 0 0 4px; }
+#dlgActions { flex-direction: column; gap: 9px; }
+.btn.danger { background: linear-gradient(135deg, #ff3d4e, #ff7088); color: #fff; box-shadow: 0 10px 26px rgba(255,61,78,.34); }
+.preset-thumbs .ph { display: grid; place-items: center; font-size: 15px; }
+.hist-del { width: 28px; height: 28px; flex-shrink: 0; border-radius: 9px; background: var(--panel-2); border: 1px solid var(--line); color: var(--muted); font-size: 16px; font-weight: 800; display: grid; place-items: center; transition: transform .12s, color .2s; }
+.hist-del:active { transform: scale(.9); }
+.hist-del:hover { color: var(--accent); }
+.num-result { font-size: 92px; font-weight: 800; line-height: 1.05; letter-spacing: -3px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+.num-result.pop { animation: pop .35s ease; }
+
+/* ============ DRAG REORDER ============ */
+.racer-card.dragging { opacity: .55; transform: scale(1.08); box-shadow: var(--shadow); z-index: 6; pointer-events: none; }
+.racers.reordering .racer-card:not(.dragging) { transition: transform .18s ease; }
+
+/* ============ FOCUS / A11Y ============ */
+:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.switch:focus-visible { outline-offset: 3px; border-radius: 999px; }
+
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -513,12 +556,12 @@ input { font-family: inherit; }
         </div>
       </div>
       <div class="field toggle-row">
-        <label style="margin:0">Random events <span style="color:var(--muted);font-weight:600">— boosts & banana peels</span></label>
-        <div class="switch on" id="eventsSwitch"><div class="knob"></div></div>
+        <label style="margin:0" id="eventsLabel">Random events <span style="color:var(--muted);font-weight:600">— boosts & banana peels</span></label>
+        <div class="switch on" id="eventsSwitch" role="switch" tabindex="0" aria-checked="true" aria-labelledby="eventsLabel"><div class="knob"></div></div>
       </div>
       <div class="field toggle-row">
-        <label style="margin:0">Sound effects</label>
-        <div class="switch on" id="soundSwitch"><div class="knob"></div></div>
+        <label style="margin:0" id="soundLabel">Sound effects</label>
+        <div class="switch on" id="soundSwitch" role="switch" tabindex="0" aria-checked="true" aria-labelledby="soundLabel"><div class="knob"></div></div>
       </div>
       <div class="field">
         <label>Custom background <span style="color:var(--muted);font-weight:600">(optional)</span></label>
@@ -550,10 +593,10 @@ input { font-family: inherit; }
 
 <!-- BOTTOM TABS -->
 <nav class="tabs">
-  <div class="tabs-inner">
-    <button class="tab active" data-view="setup"><span class="ic">🏁</span>Setup</button>
-    <button class="tab" data-view="stats"><span class="ic">📊</span>Stats</button>
-    <button class="tab" data-view="history"><span class="ic">📜</span>History</button>
+  <div class="tabs-inner" role="tablist">
+    <button class="tab active" data-view="setup" role="tab" aria-selected="true"><span class="ic">🏁</span>Setup</button>
+    <button class="tab" data-view="stats" role="tab" aria-selected="false"><span class="ic">📊</span>Stats</button>
+    <button class="tab" data-view="history" role="tab" aria-selected="false"><span class="ic">📜</span>History</button>
     <button class="tab" id="pickerTab"><span class="ic">🎡</span>Picker</button>
     <button class="tab" id="raceTab"><span class="ic">🚦</span>Race!</button>
   </div>
@@ -561,7 +604,7 @@ input { font-family: inherit; }
 
 <!-- HOW TO PLAY MODAL -->
 <div class="modal-bg" id="helpModal">
-  <div class="modal scroll">
+  <div class="modal scroll" role="dialog" aria-modal="true">
     <h3>🏁 How to play</h3>
     <div class="htp-steps">
       <div class="htp-step">
@@ -609,18 +652,22 @@ input { font-family: inherit; }
 
 <!-- EDIT RACER MODAL -->
 <div class="modal-bg" id="editModal">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
     <h3 id="editTitle">Add racer</h3>
     <div class="preview-row">
       <div class="preview" id="editPreview">🏃</div>
-      <button class="btn teal" id="choosePhotoBtn">📷 Choose photo</button>
+      <div style="display:flex;gap:9px">
+        <button class="btn teal" id="choosePhotoBtn">📷 Choose photo</button>
+        <button class="btn ghost" id="rerollEmojiBtn" aria-label="Use a random emoji" title="Use a random emoji">🎲</button>
+      </div>
     </div>
     <input class="text-input" id="editName" placeholder="Racer name" maxlength="22">
+    <button class="btn ghost full" id="editResetStats" style="display:none;margin-top:14px">↺ Reset this racer's stats</button>
     <div class="modal-actions">
       <button class="btn ghost full" id="editCancel">Cancel</button>
       <button class="btn primary full" id="editSave">Save</button>
     </div>
-    <div class="hint">Tip: square photos look best as circular avatars.</div>
+    <div class="hint">No photo? A random emoji is used — tap 🎲 for another.</div>
   </div>
 </div>
 
@@ -651,15 +698,50 @@ input { font-family: inherit; }
 <!-- PICKER STAGE -->
 <div class="picker-stage" id="pickerStage">
   <button class="icon-btn picker-close" id="pickerClose">✕</button>
-  <h2 style="margin:0 0 18px;font-size:20px">🎡 Wheel of Names</h2>
-  <div class="wheel-wrap">
-    <div class="wheel-pointer"></div>
-    <canvas id="wheelCanvas" width="720" height="720"></canvas>
-    <div class="wheel-center">🎯</div>
+  <div class="seg" id="pickerModeSeg" style="width:100%;max-width:320px;margin-bottom:20px">
+    <button data-pmode="names" class="on">🎡 Names</button>
+    <button data-pmode="number">🔢 Number</button>
   </div>
-  <div class="picker-result" id="pickerResult"></div>
-  <button class="btn primary lg" id="spinBtn" style="width:200px">SPIN</button>
+
+  <div id="pickerNames" style="display:flex;flex-direction:column;align-items:center;width:100%">
+    <div class="wheel-wrap">
+      <div class="wheel-pointer"></div>
+      <canvas id="wheelCanvas" width="720" height="720"></canvas>
+      <div class="wheel-center">🎯</div>
+    </div>
+    <div class="picker-result" id="pickerResult"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn primary lg" id="spinBtn" style="width:200px">SPIN</button>
+      <button class="btn ghost lg" id="removeWinnerBtn" style="display:none">➖ Remove winner</button>
+    </div>
+  </div>
+
+  <div id="pickerNumber" style="display:none;width:100%;max-width:320px;text-align:center">
+    <div class="num-result" id="numResult">—</div>
+    <div style="display:flex;gap:12px;margin:18px 0">
+      <label style="flex:1;font-size:12px;font-weight:700;color:var(--muted)">Min
+        <input class="text-input" id="numMin" type="number" inputmode="numeric" value="1" style="margin-top:6px;text-align:center">
+      </label>
+      <label style="flex:1;font-size:12px;font-weight:700;color:var(--muted)">Max
+        <input class="text-input" id="numMax" type="number" inputmode="numeric" value="100" style="margin-top:6px;text-align:center">
+      </label>
+    </div>
+    <button class="btn primary lg full" id="genNumBtn">🎲 Generate</button>
+  </div>
 </div>
+
+<!-- REUSABLE DIALOG -->
+<div class="modal-bg" id="dlgModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+    <h3 id="dlgTitle"></h3>
+    <p class="dlg-msg" id="dlgMsg"></p>
+    <input class="text-input" id="dlgInput" style="display:none">
+    <div class="modal-actions" id="dlgActions"></div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
 
 <canvas id="confetti"></canvas>
 
@@ -682,17 +764,101 @@ const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const uid = () => Math.random().toString(36).slice(2, 9);
 
+/* Google Analytics event helper — sends counts/categories only, never names. */
+function track(name, params) {
+  try { if (typeof gtag === "function") gtag("event", name, params || {}); } catch {}
+}
+
+/* ===================== TOASTS ===================== */
+function toast(msg, ms = 2400) {
+  const wrap = $("#toastWrap");
+  const el = document.createElement("div");
+  el.className = "toast"; el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 320); }, ms);
+}
+
+/* ===================== STYLED DIALOGS ===================== */
+/* Promise-based replacements for native alert/confirm/prompt, matching the app's modals. */
+function dialog({ title = "", message = "", input = null, buttons = [], cancelValue = null }) {
+  return new Promise(resolve => {
+    const bg = $("#dlgModal"), titleEl = $("#dlgTitle"), msgEl = $("#dlgMsg"),
+          inp = $("#dlgInput"), actions = $("#dlgActions");
+    titleEl.textContent = title; titleEl.style.display = title ? "block" : "none";
+    msgEl.innerHTML = message ? escapeHtml(message).replace(/\n/g, "<br>") : "";
+    msgEl.style.display = message ? "block" : "none";
+    if (input) {
+      inp.style.display = "block"; inp.value = input.value || "";
+      inp.placeholder = input.placeholder || ""; inp.maxLength = input.maxLength || 524288;
+    } else inp.style.display = "none";
+    actions.innerHTML = "";
+    let done = false;
+    const finish = v => { if (done) return; done = true; cleanup(); resolve(v); };
+    buttons.forEach(b => {
+      const btn = document.createElement("button");
+      btn.className = "btn full " + (b.variant || "ghost");
+      btn.textContent = b.label;
+      btn.onclick = () => finish(b.returnInput ? inp.value.trim() : b.value);
+      actions.appendChild(btn);
+    });
+    const onBg = e => { if (e.target === bg) finish(cancelValue); };
+    const onKey = e => {
+      if (e.key === "Escape") finish(cancelValue);
+      else if (e.key === "Enter" && input) {
+        const submit = buttons.find(b => b.returnInput);
+        if (submit) { e.preventDefault(); finish(inp.value.trim()); }
+      }
+    };
+    function cleanup() {
+      bg.classList.remove("open");
+      bg.removeEventListener("click", onBg);
+      document.removeEventListener("keydown", onKey);
+    }
+    bg.addEventListener("click", onBg);
+    document.addEventListener("keydown", onKey);
+    bg.classList.add("open");
+    setTimeout(() => { if (input) { inp.focus(); inp.select(); } else actions.lastChild && actions.lastChild.focus(); }, 120);
+  });
+}
+const uiAlert = (message, title = "") =>
+  dialog({ title, message, buttons: [{ label: "OK", value: true, variant: "primary" }], cancelValue: true });
+const uiConfirm = (message, { title = "", ok = "OK", cancel = "Cancel", danger = false } = {}) =>
+  dialog({ title, message, cancelValue: false, buttons: [
+    { label: ok, value: true, variant: danger ? "danger" : "primary" },
+    { label: cancel, value: false, variant: "ghost" } ] });
+const uiPrompt = (message, { title = "", value = "", placeholder = "", ok = "Save", maxLength } = {}) =>
+  dialog({ title, message, input: { value, placeholder, maxLength }, cancelValue: null, buttons: [
+    { label: ok, returnInput: true, variant: "primary" },
+    { label: "Cancel", value: null, variant: "ghost" } ] });
+
+/* ===================== EMOJI AVATARS ===================== */
+const EMOJI_POOL = [
+  "🦊","🐼","🐶","🐱","🦁","🐯","🐰","🐨","🐷","🐮","🐸","🐵","🦄","🐲","🦖","🐙",
+  "🦀","🐝","🐢","🦅","🦉","🐺","🐗","🦌","🐹","🦝","🦦","🐧","🐔","🦜","🦚","🦩",
+  "🦢","🐳","🦈","🦓","🦒","🐊","🦕","🐞","🦋","🐌","🦔","🌟","⚡","🔥","🚀","🎯",
+  "🍀","🍕","🌮","👾","🤖","🎃","👻","🦕"
+];
+const randomEmoji = () => EMOJI_POOL[(Math.random() * EMOJI_POOL.length) | 0];
+
 function load() {
   try { racers = JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { racers = []; }
   try { history = JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch { history = []; }
   try { presets = JSON.parse(localStorage.getItem(PRESET_KEY)) || []; } catch { presets = []; }
   try { settings = { ...settings, ...(JSON.parse(localStorage.getItem(SET_KEY)) || {}) }; } catch {}
-  racers.forEach(r => { r.wins ??= 0; r.podiums ??= 0; r.races ??= 0; });
+  racers.forEach(r => { r.wins ??= 0; r.podiums ??= 0; r.races ??= 0; r.emoji ??= randomEmoji(); });
 }
-function saveRacers() { localStorage.setItem(LS_KEY, JSON.stringify(racers)); }
-function saveHistory() { localStorage.setItem(HIST_KEY, JSON.stringify(history)); }
-function saveSettings() { localStorage.setItem(SET_KEY, JSON.stringify(settings)); }
-function savePresets() { localStorage.setItem(PRESET_KEY, JSON.stringify(presets)); }
+/* Wrap saves so a full quota (lots of photos/groups) surfaces a message instead of silently failing. */
+function safeSave(key, value, label) {
+  try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+  catch (e) {
+    toast(`Couldn't save ${label} — device storage is full. Try removing some photos or saved groups.`, 4500);
+    return false;
+  }
+}
+function saveRacers() { return safeSave(LS_KEY, racers, "racers"); }
+function saveHistory() { return safeSave(HIST_KEY, history, "history"); }
+function saveSettings() { return safeSave(SET_KEY, settings, "settings"); }
+function savePresets() { return safeSave(PRESET_KEY, presets, "saved groups"); }
 
 /* ===================== THEME ===================== */
 function initTheme() {
@@ -706,6 +872,7 @@ $("#themeBtn").onclick = () => {
   document.documentElement.setAttribute("data-theme", next);
   localStorage.setItem("pictureRace.theme", next);
   $("#themeBtn").textContent = next === "dark" ? "☀️" : "🌙";
+  track("appearance_toggle", { mode: next });
 };
 
 /* ===================== HOW TO PLAY ===================== */
@@ -730,18 +897,21 @@ function renderRacers() {
   racers.forEach(r => {
     const card = document.createElement("div");
     card.className = "racer-card";
+    card.dataset.id = r.id;
     const avatar = r.img
       ? `<img class="avatar" src="${r.img}" alt="${escapeHtml(r.name)}">`
-      : `<div class="avatar ph">🏃</div>`;
+      : `<div class="avatar ph">${r.emoji || "🏃"}</div>`;
     const rec = r.races > 0 ? `${r.wins}W · ${r.podiums}🏅` : "New";
     card.innerHTML = `
-      <button class="x" data-del="${r.id}" aria-label="Remove">×</button>
+      <button class="x" data-del="${r.id}" aria-label="Remove ${escapeHtml(r.name)}">×</button>
       ${avatar}
       <div class="nm">${escapeHtml(r.name)}</div>
       <div class="rec">${rec}</div>`;
-    card.querySelector(".avatar").onclick = () => openEdit(r.id);
-    card.querySelector(".nm").onclick = () => openEdit(r.id);
+    const open = () => { if (!justDragged) openEdit(r.id); };
+    card.querySelector(".avatar").onclick = open;
+    card.querySelector(".nm").onclick = open;
     card.querySelector(".x").onclick = (e) => { e.stopPropagation(); removeRacer(r.id); };
+    attachDragReorder(card);
     grid.appendChild(card);
   });
 
@@ -767,16 +937,70 @@ function updateRaceBtn() {
   $("#pickerTab").style.opacity = racers.length >= 2 ? "1" : ".45";
 }
 
+/* ===================== DRAG TO REORDER ===================== */
+/* Long-press a card to pick it up, then drag to reorder. A quick tap still
+   opens the editor; `justDragged` swallows the click that follows a drag. */
+let dragEl = null, justDragged = false;
+function attachDragReorder(card) {
+  card.addEventListener("pointerdown", e => {
+    if (e.button > 0 || e.target.closest(".x")) return;
+    const grid = $("#racerGrid");
+    const sx = e.clientX, sy = e.clientY;
+    let dragging = false;
+    const timer = setTimeout(() => { dragging = true; beginDrag(card); }, 260);
+    const move = ev => {
+      if (!dragging) {
+        if (Math.abs(ev.clientX - sx) > 10 || Math.abs(ev.clientY - sy) > 10) { clearTimeout(timer); cleanup(); }
+        return;
+      }
+      ev.preventDefault();
+      const tgt = document.elementFromPoint(ev.clientX, ev.clientY);
+      const over = tgt && tgt.closest(".racer-card");
+      if (over && over !== dragEl && over.dataset.id) {
+        const after = dragEl.compareDocumentPosition(over) & Node.DOCUMENT_POSITION_FOLLOWING;
+        grid.insertBefore(dragEl, after ? over.nextSibling : over);
+      }
+    };
+    const up = () => { clearTimeout(timer); if (dragging) endDrag(grid); cleanup(); };
+    function cleanup() { document.removeEventListener("pointermove", move); document.removeEventListener("pointerup", up); }
+    document.addEventListener("pointermove", move, { passive: false });
+    document.addEventListener("pointerup", up);
+  });
+}
+function beginDrag(card) {
+  dragEl = card;
+  $("#racerGrid").classList.add("reordering");
+  card.classList.add("dragging");
+  beep(620, .04);
+}
+function endDrag(grid) {
+  if (dragEl) dragEl.classList.remove("dragging");
+  grid.classList.remove("reordering");
+  // rebuild racer order from the cards' DOM order
+  const ids = [...grid.querySelectorAll(".racer-card")].map(c => c.dataset.id);
+  const before = racers.map(r => r.id).join();
+  racers.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
+  dragEl = null;
+  if (racers.map(r => r.id).join() !== before) {
+    saveRacers(); track("racers_reordered", { racers: racers.length });
+  }
+  renderRacers();
+  justDragged = true; setTimeout(() => justDragged = false, 320);
+}
+
 /* ===================== EDIT / ADD MODAL ===================== */
 let editingId = null;
 let pendingImg = null;
+let pendingEmoji = null;
 
 function openEdit(id) {
   editingId = id;
   const r = id ? racers.find(x => x.id === id) : null;
   pendingImg = r ? r.img : null;
+  pendingEmoji = r ? (r.emoji || randomEmoji()) : randomEmoji();
   $("#editTitle").textContent = r ? "Edit racer" : "Add racer";
   $("#editName").value = r ? r.name : "";
+  $("#editResetStats").style.display = (r && r.races > 0) ? "block" : "none";
   renderPreview();
   $("#editModal").classList.add("open");
   setTimeout(() => { if (!r) $("#editName").focus(); }, 300);
@@ -784,13 +1008,26 @@ function openEdit(id) {
 function renderPreview() {
   const p = $("#editPreview");
   if (pendingImg) { p.innerHTML = `<img src="${pendingImg}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`; }
-  else { p.textContent = "🏃"; }
+  else { p.textContent = pendingEmoji || "🏃"; }
 }
-function closeEdit() { $("#editModal").classList.remove("open"); editingId = null; pendingImg = null; }
+function closeEdit() { $("#editModal").classList.remove("open"); editingId = null; pendingImg = null; pendingEmoji = null; }
 
 $("#editCancel").onclick = closeEdit;
 $("#editModal").onclick = e => { if (e.target === $("#editModal")) closeEdit(); };
 $("#choosePhotoBtn").onclick = () => { $("#fileInput").dataset.target = "racer"; $("#fileInput").click(); };
+$("#rerollEmojiBtn").onclick = () => { pendingImg = null; pendingEmoji = randomEmoji(); renderPreview(); beep(660, .04); };
+$("#editResetStats").onclick = async () => {
+  if (!editingId) return;
+  const r = racers.find(x => x.id === editingId);
+  if (!r) return;
+  if (await uiConfirm(`Reset ${r.name}'s wins, podiums and races back to zero?`, { title: "Reset stats", ok: "Reset", danger: true })) {
+    r.wins = 0; r.podiums = 0; r.races = 0;
+    saveRacers(); renderRacers();
+    $("#editResetStats").style.display = "none";
+    toast(`${r.name}'s stats were reset.`);
+    track("racer_stats_reset");
+  }
+};
 
 $("#fileInput").onchange = async e => {
   const file = e.target.files[0];
@@ -805,10 +1042,12 @@ $("#editSave").onclick = () => {
   const name = $("#editName").value.trim() || `Racer ${racers.length + 1}`;
   if (editingId) {
     const r = racers.find(x => x.id === editingId);
-    r.name = name; r.img = pendingImg;
+    r.name = name; r.img = pendingImg; r.emoji = pendingEmoji || r.emoji || randomEmoji();
+    track("racer_edited", { has_photo: !!pendingImg });
   } else {
     if (racers.length >= 20) { closeEdit(); return; }
-    racers.push({ id: uid(), name, img: pendingImg, wins: 0, podiums: 0, races: 0 });
+    racers.push({ id: uid(), name, img: pendingImg, emoji: pendingEmoji || randomEmoji(), wins: 0, podiums: 0, races: 0 });
+    track("racer_added", { has_photo: !!pendingImg, total: racers.length });
   }
   saveRacers(); renderRacers(); closeEdit();
 };
@@ -842,28 +1081,30 @@ $("#shuffleBtn").onclick = () => {
   }
   saveRacers(); renderRacers(); beep(520, .05);
 };
-$("#clearBtn").onclick = () => {
-  if (racers.length && confirm("Remove all racers? Their stats will be lost.")) {
+$("#clearBtn").onclick = async () => {
+  if (racers.length && await uiConfirm("Remove all racers? Their stats will be lost.", { title: "Clear racers", ok: "Remove all", danger: true })) {
     racers = []; saveRacers(); renderRacers();
   }
 };
 
 /* ===================== SAVED PRESET GROUPS ===================== */
-$("#savePresetBtn").onclick = () => {
-  if (racers.length < 1) { alert("Add some racers first, then save them as a group."); return; }
-  const name = prompt("Name this group (e.g. \"The Crew\"):", "");
+$("#savePresetBtn").onclick = async () => {
+  if (racers.length < 1) { toast("Add some racers first, then save them as a group."); return; }
+  const name = await uiPrompt("Give this group a name so you can load it again later.", { title: "Save group", placeholder: "e.g. The Crew", ok: "Save", maxLength: 30 });
   if (name === null) return;
   const clean = name.trim() || `Group ${presets.length + 1}`;
-  // store only name + photo, not win/stat records — a preset is a reusable roster
-  const snapshot = racers.map(r => ({ name: r.name, img: r.img || null }));
+  // store name + photo + emoji, not win/stat records — a preset is a reusable roster
+  const snapshot = racers.map(r => ({ name: r.name, img: r.img || null, emoji: r.emoji || randomEmoji() }));
   const existing = presets.find(p => p.name.toLowerCase() === clean.toLowerCase());
   if (existing) {
-    if (!confirm(`A group called "${existing.name}" exists. Overwrite it?`)) return;
+    if (!await uiConfirm(`A group called "${existing.name}" already exists. Overwrite it?`, { title: "Overwrite group", ok: "Overwrite" })) return;
     existing.racers = snapshot; existing.ts = Date.now();
   } else {
     presets.unshift({ id: uid(), name: clean, ts: Date.now(), racers: snapshot });
   }
   savePresets(); renderPresets(); beep(640, .06); beep(840, .08);
+  toast(`Saved "${clean}".`);
+  track("preset_saved", { racers: snapshot.length });
 };
 
 function renderPresets() {
@@ -872,7 +1113,7 @@ function renderPresets() {
   $("#presetCount").textContent = presets.length;
   list.innerHTML = presets.map(p => {
     const thumbs = p.racers.slice(0, 4).map(r =>
-      r.img ? `<img src="${r.img}" alt="">` : `<div class="ph"></div>`
+      r.img ? `<img src="${r.img}" alt="">` : `<div class="ph">${r.emoji || ""}</div>`
     ).join("");
     const more = p.racers.length > 4 ? `<div class="more">+${p.racers.length - 4}</div>` : "";
     return `<div class="preset-row" data-id="${p.id}">
@@ -891,24 +1132,39 @@ function renderPresets() {
   list.querySelectorAll("[data-del]").forEach(b => b.onclick = () => deletePreset(b.dataset.del));
 }
 
-function loadPreset(id) {
+async function loadPreset(id) {
   const p = presets.find(x => x.id === id);
   if (!p) return;
-  const replace = racers.length === 0 || confirm(`Load "${p.name}"?\n\nOK = replace current racers\nCancel = add them to the current list`);
+  let mode = "replace";
+  if (racers.length > 0) {
+    mode = await dialog({
+      title: `Load "${p.name}"?`,
+      message: "Replace your current racers, or add this group to them?",
+      cancelValue: null,
+      buttons: [
+        { label: "Replace current", value: "replace", variant: "primary" },
+        { label: "Add to current", value: "append", variant: "teal" },
+        { label: "Cancel", value: null, variant: "ghost" }
+      ]
+    });
+    if (mode === null) return;
+  }
+  const replace = mode === "replace";
   // matching names keep their existing stats; brand-new racers start fresh
   const fresh = p.racers.slice(0, 20).map(r => {
     const prior = !replace && racers.find(x => x.name === r.name);
-    return { id: uid(), name: r.name, img: r.img,
+    return { id: uid(), name: r.name, img: r.img, emoji: r.emoji || randomEmoji(),
       wins: prior?.wins || 0, podiums: prior?.podiums || 0, races: prior?.races || 0 };
   });
   if (replace) racers = fresh;
   else racers = [...racers, ...fresh].slice(0, 20);
   saveRacers(); renderRacers(); beep(720, .07);
+  track("preset_loaded", { racers: fresh.length, mode });
 }
 
-function deletePreset(id) {
+async function deletePreset(id) {
   const p = presets.find(x => x.id === id);
-  if (p && confirm(`Delete saved group "${p.name}"? This won't affect your current racers.`)) {
+  if (p && await uiConfirm(`Delete saved group "${p.name}"? This won't affect your current racers.`, { title: "Delete group", ok: "Delete", danger: true })) {
     presets = presets.filter(x => x.id !== id);
     savePresets(); renderPresets();
   }
@@ -930,23 +1186,24 @@ function syncDurSeg() {
 function initSettings() {
   $$("#durSeg button").forEach(b => {
     if (b.dataset.dur === "custom") {
-      b.onclick = () => {
+      b.onclick = async () => {
         const cur = PRESET_DURS.includes(settings.duration) ? "" : settings.duration;
-        const val = prompt("Race length in seconds (5–600):", cur || "45");
+        const val = await uiPrompt("How long should the race last? (5–600 seconds)", { title: "Custom duration", value: String(cur || "45"), ok: "Set" });
         if (val === null) return;
         let n = Math.round(parseFloat(val));
-        if (!isFinite(n)) return;
+        if (!isFinite(n)) { toast("Enter a number between 5 and 600."); return; }
         n = Math.max(5, Math.min(600, n));
         settings.duration = n; saveSettings(); syncDurSeg(); beep(560, .05);
+        track("duration_changed", { duration: n, type: "custom" });
       };
     } else {
-      b.onclick = () => { settings.duration = +b.dataset.dur; saveSettings(); syncDurSeg(); };
+      b.onclick = () => { settings.duration = +b.dataset.dur; saveSettings(); syncDurSeg(); track("duration_changed", { duration: settings.duration, type: "preset" }); };
     }
   });
   syncDurSeg();
   $$("#themeSeg button").forEach(b => {
     b.classList.toggle("on", b.dataset.th === settings.theme);
-    b.onclick = () => { settings.theme = b.dataset.th; saveSettings(); $$("#themeSeg button").forEach(x => x.classList.toggle("on", x === b)); };
+    b.onclick = () => { settings.theme = b.dataset.th; saveSettings(); $$("#themeSeg button").forEach(x => x.classList.toggle("on", x === b)); track("race_theme_changed", { theme: settings.theme }); };
   });
   setSwitch("#eventsSwitch", settings.events, v => { settings.events = v; saveSettings(); });
   setSwitch("#soundSwitch", settings.sound, v => { settings.sound = v; saveSettings(); });
@@ -962,23 +1219,27 @@ function initSettings() {
 }
 function setSwitch(sel, val, cb) {
   const el = $(sel);
-  el.classList.toggle("on", val);
-  el.onclick = () => { const nv = !el.classList.contains("on"); el.classList.toggle("on", nv); cb(nv); };
+  const apply = v => { el.classList.toggle("on", v); el.setAttribute("aria-checked", v ? "true" : "false"); };
+  apply(val);
+  const toggle = () => { const nv = !el.classList.contains("on"); apply(nv); cb(nv); };
+  el.onclick = toggle;
+  el.onkeydown = e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); toggle(); } };
 }
 
 /* ===================== NAVIGATION ===================== */
 $$(".tab[data-view]").forEach(t => {
   t.onclick = () => {
-    $$(".tab").forEach(x => x.classList.remove("active"));
-    t.classList.add("active");
+    $$(".tab[data-view]").forEach(x => { x.classList.remove("active"); x.setAttribute("aria-selected", "false"); });
+    $$(".tab:not([data-view])").forEach(x => x.classList.remove("active"));
+    t.classList.add("active"); t.setAttribute("aria-selected", "true");
     $$(".view").forEach(v => v.classList.remove("active"));
     $(`#view-${t.dataset.view}`).classList.add("active");
     if (t.dataset.view === "stats") renderStats();
     if (t.dataset.view === "history") renderHistory();
   };
 });
-$("#raceTab").onclick = () => { if (racers.length >= 2) startRace(); };
-$("#pickerTab").onclick = () => { if (racers.length >= 2) openPicker(); };
+$("#raceTab").onclick = () => { racers.length >= 2 ? startRace() : toast("Add at least 2 racers to start a race."); };
+$("#pickerTab").onclick = () => { racers.length >= 2 ? openPicker() : toast("Add at least 2 racers to use the picker."); };
 
 /* ===================== SOUND ENGINE ===================== */
 let audioCtx = null;
@@ -1058,11 +1319,29 @@ const EVENTS = [
   { txt: "🪨 Tripped on a rock", spd: 0.5, dur: 1.2, kind: "slow" }
 ];
 
+/* ===================== RACE MOTION MODEL =====================
+   The field runs as a bunched PACK with independent wobble (constant lead
+   changes) for most of the race, then smoothly CONVERGES into its
+   predetermined finish order only in the final stretch — so you can't tell
+   from the start who's going to win, yet every racer still had an equal,
+   pre-shuffled chance and the on-screen order always matches the results. */
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const smoothstep = x => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+const CONV_START = 0.45, CONV_END = 0.82;  // converge to final order between these race fractions
+const PACK_FIN = 0.90;                      // shared pack pace reaches the line at this fraction
+const WOB_AMP = 0.10, WOB_F1 = 0.9, WOB_F2 = 1.7; // lead-change wobble (amplitude / two frequencies)
+const CHASE_TAU = 0.32;                     // how tightly a runner chases its target (smaller = snappier)
+const BOOST_OFF = 0.06, SLOW_CAP = 0.02;    // event effects: boost surges ahead, slow caps the pace
+
 /* ===================== RACE ENGINE ===================== */
 let raceData = null;
 let raceRAF = null;
 
 function startRace() {
+  track("race_start", {
+    racers: racers.length, theme: settings.theme, duration: settings.duration,
+    events_on: settings.events, sound_on: settings.sound
+  });
   const stage = $("#raceStage");
   const theme = THEMES[settings.theme] || THEMES.track;
   // background
@@ -1087,28 +1366,26 @@ function startRace() {
       <div class="name-tag">${escapeHtml(r.name)}</div>
       <div class="finish"></div>
       <div class="runner" id="runner-${i}">
-        ${r.img ? `<img src="${r.img}" alt="">` : `<img src="${placeholderImg(r.name)}" alt="">`}
+        <img src="${avatarSrc(r)}" alt="">
         <div class="pos-badge">${i + 1}</div>
       </div>`;
     trackWrap.appendChild(lane);
     return {
       racer: r, idx: i, el: lane.querySelector(".runner"), badge: lane.querySelector(".pos-badge"),
-      prog: 0, lastBadge: 0, noise: Math.random() * 100,
+      prog: 0, lastBadge: 0,
       phase: Math.random() * Math.PI * 2, phase2: Math.random() * Math.PI * 2,
-      event: null, eventMul: 1, finished: false, finishTime: 0
+      event: null, boostOff: 0, finished: false, finishTime: 0
     };
   });
 
-  // Each racer reaches the line at a slightly different scheduled time so the
-  // predetermined order holds, but movement is driven by an integrated velocity
-  // (always forward) rather than a position formula — smoother, and placement is
-  // read straight off actual on-track position so screen and results never disagree.
+  // Each racer is assigned a scheduled crossing time in its predetermined place;
+  // the winner reaches the line at ~86% of the duration, the last at ~98%. Placement
+  // is read straight off actual on-track position, so screen and results never disagree.
   const dur = settings.duration;
   order.forEach((racerIdx, place) => {
     const run = runners[racerIdx];
     run.targetPlace = place;
-    // winner finishes around 92% of duration, last around 99%; tight enough to stay exciting
-    run.finishAt = dur * (0.92 + (place / Math.max(1, racers.length - 1)) * 0.07);
+    run.finishAt = dur * (0.86 + (place / Math.max(1, racers.length - 1)) * 0.12);
   });
 
   raceData = { runners, theme, dur, startTs: 0, elapsed: 0, lastTs: 0, running: false, results: [], laneW: 0 };
@@ -1123,16 +1400,22 @@ function measureLanes() {
   if (firstLane) raceData.laneW = firstLane.clientWidth - 56; // minus runner width + finish
 }
 const _phCache = {};
-function placeholderImg(name) {
-  if (_phCache[name]) return _phCache[name];
+/* Render a racer's emoji on a colored disc — used wherever a real photo is absent. */
+function emojiImg(r) {
+  const emoji = (r && r.emoji) || "🏃";
+  const seed = (r && r.name) || "";
+  const hue = ((seed.charCodeAt(0) || 63) * 37) % 360;
+  const key = emoji + "|" + hue;
+  if (_phCache[key]) return _phCache[key];
   const c = document.createElement("canvas"); c.width = c.height = 92;
   const x = c.getContext("2d");
-  const hue = (name.charCodeAt(0) * 37) % 360;
-  x.fillStyle = `hsl(${hue},65%,55%)`; x.fillRect(0, 0, 92, 92);
-  x.fillStyle = "#fff"; x.font = "bold 46px sans-serif"; x.textAlign = "center"; x.textBaseline = "middle";
-  x.fillText((name[0] || "?").toUpperCase(), 46, 50);
-  return _phCache[name] = c.toDataURL();
+  x.fillStyle = `hsl(${hue},62%,52%)`; x.fillRect(0, 0, 92, 92);
+  x.font = "52px sans-serif"; x.textAlign = "center"; x.textBaseline = "middle";
+  x.fillText(emoji, 46, 52);
+  return _phCache[key] = c.toDataURL();
 }
+/* The image source to show for a racer: their photo, or their emoji avatar. */
+function avatarSrc(r) { return (r && r.img) || emojiImg(r); }
 
 function runCountdown() {
   const cd = $("#countdown"), num = $("#cdNum");
@@ -1164,33 +1447,44 @@ function raceFrame(now) {
   rd.elapsed = elapsed;
   $("#raceTimer").textContent = elapsed.toFixed(1);
 
-  // random events
-  if (settings.events && elapsed - rd.lastEventCheck > 0.9 && elapsed < rd.dur - 2.5) {
+  // Random events only fire while the field is still a pack — never during the
+  // final convergence, so they add drama without ever changing who wins.
+  if (settings.events && elapsed - rd.lastEventCheck > 0.9 && elapsed < CONV_START * rd.dur - 0.3) {
     rd.lastEventCheck = elapsed;
     if (Math.random() < 0.28) triggerEvent(now);
   }
 
+  const frac = elapsed / rd.dur;
+  const w = smoothstep((frac - CONV_START) / (CONV_END - CONV_START)); // 0 = pack, 1 = locked into final order
+  const pack = clamp(elapsed / (PACK_FIN * rd.dur), 0, 1);             // shared pace that keeps the field bunched
+
   rd.runners.forEach(run => {
     if (run.finished) return;
 
-    // Average speed needed to reach the line on schedule (progress per second).
-    const avgSpeed = 1 / run.finishAt;
-    // Organic pace: two slow sine waves give natural surge/ease without ever
-    // dropping below zero, so the runner only ever moves FORWARD (no jitter).
-    const surge =
-      1
-      + 0.42 * Math.sin(elapsed * 1.5 + run.phase)
-      + 0.22 * Math.sin(elapsed * 3.7 + run.phase2);
-    // ease the field out of the gate so nobody starts at full pace
-    const launch = Math.min(1, elapsed / 0.8);
-    // event multiplier eases toward its target so boosts feel smooth, not snappy
-    let targetMul = 1;
-    if (run.event && now < run.event.until) targetMul = run.event.spd;
-    else if (run.event) { run.event = null; run.el.classList.remove("boost", "slow"); }
-    run.eventMul += (targetMul - run.eventMul) * Math.min(1, dt * 6);
+    // Where this runner "wants" to be right now: the shared pack early, easing
+    // into its own schedule late. `own` is intentionally NOT capped at 1 — it
+    // passes 1 right at finishAt so the crossing is decisive and stays in order.
+    const own = elapsed / run.finishAt;
+    // Independent wobble → constant lead changes early; scaled by (1 - w) so it
+    // fades to nothing before the finish and can't disturb the result.
+    const wob = (1 - w) * WOB_AMP *
+      (Math.sin(WOB_F1 * elapsed + run.phase) + 0.6 * Math.sin(WOB_F2 * elapsed + run.phase2)) / 1.6;
+    const target = clamp((1 - w) * pack + w * own + wob, 0, 1.25);
 
-    const speed = avgSpeed * Math.max(0.15, surge) * launch * run.eventMul;
-    run.prog += speed * dt;                 // integrate — monotonic, always forward
+    // Events nudge the target: a boost surges ahead, a slow caps the pace.
+    const boostOn = run.event && run.event.kind === "boost" && now < run.event.until;
+    const slowOn  = run.event && run.event.kind === "slow"  && now < run.event.until;
+    if (run.event && now >= run.event.until) { run.event = null; run.el.classList.remove("boost", "slow"); }
+    run.boostOff += ((boostOn ? BOOST_OFF : 0) - run.boostOff) * Math.min(1, dt * 5);
+
+    const desired = clamp(target + run.boostOff, 0, 1.25);
+    // Chase the target with an always-forward velocity: smooth motion that never
+    // jitters backward. When a runner is ahead of its target it simply coasts
+    // while the pack reels it back in.
+    let v = (desired - run.prog) / CHASE_TAU;
+    if (slowOn) v = Math.min(v, SLOW_CAP);
+    if (v < 0) v = 0;
+    run.prog += v * dt;
 
     if (run.prog >= 1) {
       run.prog = 1;
@@ -1209,7 +1503,7 @@ function raceFrame(now) {
   // end check — everyone home, or a safety cap a bit past scheduled duration
   if (rd.results.length >= rd.runners.length || elapsed > rd.dur + 2.5) {
     rd.runners.filter(r => !r.finished)
-      .sort((a, b) => b.prog - a.prog)      // stragglers ranked by real position
+      .sort((a, b) => a.finishAt - b.finishAt) // safety net: fall back to the scheduled order
       .forEach(r => { r.finished = true; r.finishTime = elapsed; r.prog = Math.min(r.prog, 1); rd.results.push(r); });
     finishRace();
     return;
@@ -1254,7 +1548,7 @@ function updateLiveRankings() {
     const pill = $("#leadPill");
     let img = pill.querySelector("img");
     if (!img) { img = document.createElement("img"); pill.insertBefore(img, pill.children[1]); }
-    img.src = leader.racer.img || placeholderImg(leader.racer.name);
+    img.src = avatarSrc(leader.racer);
   }
 }
 
@@ -1263,6 +1557,7 @@ function finishRace() {
   cancelAnimationFrame(raceRAF);
   raceData.running = false;
   const results = raceData.results;
+  track("race_finish", { racers: results.length, theme: settings.theme, duration: settings.duration });
   // record stats
   results.forEach((run, place) => {
     run.racer.races = (run.racer.races || 0) + 1;
@@ -1271,7 +1566,7 @@ function finishRace() {
   });
   saveRacers();
   // history
-  const podium = results.slice(0, 3).map(r => ({ name: r.racer.name, img: r.racer.img || placeholderImg(r.racer.name) }));
+  const podium = results.slice(0, 3).map(r => ({ name: r.racer.name, img: avatarSrc(r.racer) }));
   history.unshift({ ts: Date.now(), winner: podium[0], podium, theme: settings.theme });
   history = history.slice(0, 50);
   saveHistory();
@@ -1284,7 +1579,7 @@ function showFinish(results) {
   const winner = results[0].racer;
   $("#winnerHeadline").innerHTML = `🏆 ${escapeHtml(winner.name)} wins!`;
 
-  const img = i => results[i] ? (results[i].racer.img || placeholderImg(results[i].racer.name)) : "";
+  const img = i => results[i] ? avatarSrc(results[i].racer) : "";
   const nm = i => results[i] ? escapeHtml(results[i].racer.name) : "";
 
   // podium order: 2nd, 1st, 3rd
@@ -1298,7 +1593,7 @@ function showFinish(results) {
   fr.innerHTML = results.map((run, i) => `
     <div class="res-row">
       <div class="rank">${i + 1}</div>
-      <img src="${run.racer.img || placeholderImg(run.racer.name)}">
+      <img src="${avatarSrc(run.racer)}">
       <div class="rnm">${escapeHtml(run.racer.name)}</div>
     </div>`).join("");
 
@@ -1307,7 +1602,7 @@ function showFinish(results) {
   fanfare();
 }
 
-$("#rematchBtn").onclick = () => { $("#raceStage").classList.remove("open"); setTimeout(startRace, 120); };
+$("#rematchBtn").onclick = () => { track("rematch"); $("#raceStage").classList.remove("open"); setTimeout(startRace, 120); };
 $("#finishClose").onclick = closeRace;
 $("#raceClose").onclick = closeRace;
 function closeRace() {
@@ -1345,7 +1640,7 @@ $("#shareBtn").onclick = async () => {
   const medals = ["🥇", "🥈", "🥉"];
   const positions = [{ cx: W / 2, cy: 430, r: 150 }, { cx: W / 2 - 320, cy: 520, r: 110 }, { cx: W / 2 + 320, cy: 520, r: 110 }];
   for (let i = 0; i < top3.length; i++) {
-    const im = await loadImg(top3[i].racer.img || placeholderImg(top3[i].racer.name));
+    const im = await loadImg(avatarSrc(top3[i].racer));
     const p = positions[i];
     drawCircle(im, p.cx, p.cy, p.r, rings[i]);
     x.fillStyle = "#fff"; x.font = "800 38px sans-serif"; x.textAlign = "center";
@@ -1365,11 +1660,12 @@ $("#shareBtn").onclick = async () => {
   c.toBlob(async blob => {
     const file = new File([blob], "facerace-result.png", { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try { await navigator.share({ files: [file], title: "FaceRace result" }); return; } catch {}
+      try { await navigator.share({ files: [file], title: "FaceRace result" }); track("share_result", { method: "web_share" }); return; } catch {}
     }
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = "facerace-result.png"; a.click();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
+    track("share_result", { method: "download" });
   }, "image/png");
   beep(660, 0.1);
 };
@@ -1396,7 +1692,7 @@ function renderStats() {
     const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : (i + 1);
     return `<div class="lb-row">
       <div class="lb-rank">${medal}</div>
-      <img src="${r.img || placeholderImg(r.name)}">
+      <img src="${avatarSrc(r)}">
       <div class="lb-info"><div class="lb-name">${escapeHtml(r.name)}</div>
       <div class="lb-sub">${r.wins} wins · ${r.podiums} podiums · ${r.races} races</div></div>
       <div class="lb-pct"><div class="pp">${pct}%</div><div class="ps">win rate</div></div>
@@ -1408,7 +1704,7 @@ function renderStats() {
 function renderHistory() {
   const list = $("#historyList");
   if (!history.length) { list.innerHTML = `<div class="empty"><div class="big">📜</div><p>Past races and their podiums will show up here.</p></div>`; return; }
-  list.innerHTML = history.map(h => {
+  list.innerHTML = history.map((h, idx) => {
     const d = new Date(h.ts);
     const when = d.toLocaleDateString([], { month: "short", day: "numeric" }) + " · " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
     const podiumPics = h.podium.map((p, i) => `<span title="${escapeHtml(p.name)}">${["🥇","🥈","🥉"][i]}${escapeHtml(p.name)}</span>`).join(" ");
@@ -1417,34 +1713,56 @@ function renderHistory() {
       <div class="hi"><div class="hn">${escapeHtml(h.winner.name)}</div>
       <div class="hd">${when} · ${(THEMES[h.theme]||{}).emoji||"🏁"} ${h.theme||""}</div></div>
       <div class="hp">${podiumPics}</div>
+      <button class="hist-del" data-hdel="${idx}" aria-label="Delete this race">×</button>
     </div>`;
   }).join("");
+  list.querySelectorAll("[data-hdel]").forEach(b => b.onclick = () => {
+    history.splice(+b.dataset.hdel, 1); saveHistory(); renderHistory();
+  });
 }
-$("#clearHistBtn").onclick = () => { if (history.length && confirm("Clear race history?")) { history = []; saveHistory(); renderHistory(); } };
+$("#clearHistBtn").onclick = async () => {
+  if (history.length && await uiConfirm("Clear your whole race history?", { title: "Clear history", ok: "Clear", danger: true })) {
+    history = []; saveHistory(); renderHistory();
+  }
+};
 
 /* ===================== WHEEL PICKER ===================== */
 const wheelCanvas = $("#wheelCanvas");
 const wctx = wheelCanvas.getContext("2d");
 let wheelAngle = 0, wheelSpinning = false, wheelImgs = {};
+let pickerPool = [];        // a per-session copy of racers so "remove winner" doesn't delete anyone
+let lastWinnerIdx = -1;
 
 function openPicker() {
+  pickerPool = racers.slice();
+  lastWinnerIdx = -1;
   $("#pickerStage").classList.add("open");
   $("#pickerResult").innerHTML = "";
+  $("#removeWinnerBtn").style.display = "none";
+  setPickerMode("names");
   preloadWheelImgs().then(drawWheel);
 }
 $("#pickerClose").onclick = () => $("#pickerStage").classList.remove("open");
 
+function setPickerMode(mode) {
+  $$("#pickerModeSeg button").forEach(b => b.classList.toggle("on", b.dataset.pmode === mode));
+  $("#pickerNames").style.display = mode === "names" ? "flex" : "none";
+  $("#pickerNumber").style.display = mode === "number" ? "block" : "none";
+}
+$$("#pickerModeSeg button").forEach(b => b.onclick = () => setPickerMode(b.dataset.pmode));
+
 function preloadWheelImgs() {
-  return Promise.all(racers.map(r => new Promise(res => {
+  return Promise.all(pickerPool.map(r => new Promise(res => {
     if (wheelImgs[r.id]) return res();
     const im = new Image(); im.onload = () => { wheelImgs[r.id] = im; res(); }; im.onerror = () => res();
-    im.src = r.img || placeholderImg(r.name);
+    im.src = avatarSrc(r);
   })));
 }
 
 function drawWheel() {
-  const n = racers.length, size = wheelCanvas.width, cx = size / 2, cy = size / 2, R = size / 2 - 6;
+  const n = pickerPool.length, size = wheelCanvas.width, cx = size / 2, cy = size / 2, R = size / 2 - 6;
   wctx.clearRect(0, 0, size, size);
+  if (!n) return;
   const seg = (Math.PI * 2) / n;
   const palette = ["#ff3d71", "#00e5c0", "#ffd23f", "#7a5cff", "#34d97b", "#ff8a3d", "#3da5ff", "#ff5ec4"];
   for (let i = 0; i < n; i++) {
@@ -1455,7 +1773,7 @@ function drawWheel() {
     // avatar
     const mid = a0 + seg / 2, ir = R * 0.68;
     const ix = cx + Math.cos(mid) * ir, iy = cy + Math.sin(mid) * ir;
-    const im = wheelImgs[racers[i].id];
+    const im = wheelImgs[pickerPool[i].id];
     const ar = Math.min(54, R * seg * 0.34);
     if (im) {
       wctx.save(); wctx.beginPath(); wctx.arc(ix, iy, ar, 0, 6.28); wctx.closePath();
@@ -1466,10 +1784,13 @@ function drawWheel() {
 }
 
 $("#spinBtn").onclick = () => {
-  if (wheelSpinning || racers.length < 2) return;
+  if (wheelSpinning) return;
+  if (pickerPool.length < 2) { toast("Not enough names left to spin."); return; }
   wheelSpinning = true;
+  track("picker_spin", { racers: pickerPool.length });
   $("#pickerResult").innerHTML = "";
-  const n = racers.length, seg = (Math.PI * 2) / n;
+  $("#removeWinnerBtn").style.display = "none";
+  const n = pickerPool.length, seg = (Math.PI * 2) / n;
   const winnerIdx = (Math.random() * n) | 0;
   // pointer at top (-90deg = -PI/2). want winner segment center under pointer.
   const targetMid = -Math.PI / 2;
@@ -1489,13 +1810,46 @@ $("#spinBtn").onclick = () => {
     if (t < 1) requestAnimationFrame(spin);
     else {
       wheelSpinning = false;
-      const w = racers[winnerIdx];
-      $("#pickerResult").innerHTML = `<img class="winner-pic" src="${w.img || placeholderImg(w.name)}"><div class="winner-name">🎉 ${escapeHtml(w.name)}</div>`;
+      lastWinnerIdx = winnerIdx;
+      const w = pickerPool[winnerIdx];
+      $("#pickerResult").innerHTML = `<img class="winner-pic" src="${avatarSrc(w)}"><div class="winner-name">🎉 ${escapeHtml(w.name)}</div>`;
+      if (pickerPool.length > 2) $("#removeWinnerBtn").style.display = "";
       launchConfetti(3000); fanfare();
     }
   }
   requestAnimationFrame(spin);
 };
+
+$("#removeWinnerBtn").onclick = () => {
+  if (wheelSpinning || lastWinnerIdx < 0) return;
+  const removed = pickerPool.splice(lastWinnerIdx, 1)[0];
+  lastWinnerIdx = -1;
+  $("#pickerResult").innerHTML = "";
+  $("#removeWinnerBtn").style.display = "none";
+  drawWheel();
+  if (removed) toast(`${removed.name} removed from the wheel.`);
+};
+
+/* ===================== RANDOM NUMBER GENERATOR ===================== */
+$("#genNumBtn").onclick = () => {
+  let lo = Math.round(parseFloat($("#numMin").value));
+  let hi = Math.round(parseFloat($("#numMax").value));
+  if (!isFinite(lo) || !isFinite(hi)) { toast("Enter a min and max number."); return; }
+  if (lo > hi) { [lo, hi] = [hi, lo]; $("#numMin").value = lo; $("#numMax").value = hi; }
+  const pick = lo + Math.floor(Math.random() * (hi - lo + 1));
+  const el = $("#numResult");
+  el.textContent = pick;
+  el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
+  beep(720, .06); beep(960, .08);
+  track("number_generated", { min: lo, max: hi });
+};
+
+/* Escape closes the edit / how-to-play modals (the dialog manages its own). */
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape" || $("#dlgModal").classList.contains("open")) return;
+  if ($("#editModal").classList.contains("open")) closeEdit();
+  else if ($("#helpModal").classList.contains("open")) $("#helpModal").classList.remove("open");
+});
 
 /* ===================== INIT ===================== */
 function init() {
