@@ -477,8 +477,12 @@ input { font-family: inherit; }
 .hist-del { width: 28px; height: 28px; flex-shrink: 0; border-radius: 9px; background: var(--panel-2); border: 1px solid var(--line); color: var(--muted); font-size: 16px; font-weight: 800; display: grid; place-items: center; transition: transform .12s, color .2s; }
 .hist-del:active { transform: scale(.9); }
 .hist-del:hover { color: var(--accent); }
-.num-result { font-size: 92px; font-weight: 800; line-height: 1.05; letter-spacing: -3px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+.num-panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 18px; text-align: center; }
+.num-result { font-size: 92px; font-weight: 800; line-height: 1.05; letter-spacing: -3px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; min-height: 108px; display: flex; align-items: center; justify-content: center; }
 .num-result.pop { animation: pop .35s ease; }
+.num-range { display: flex; gap: 12px; margin: 16px 0 20px; }
+.num-range label { flex: 1; font-size: 12px; font-weight: 700; color: var(--muted); text-align: left; }
+.num-range input { margin-top: 6px; text-align: center; }
 
 /* ============ DRAG REORDER ============ */
 .racer-card.dragging { opacity: .55; transform: scale(1.08); box-shadow: var(--shadow); z-index: 6; pointer-events: none; }
@@ -589,6 +593,19 @@ input { font-family: inherit; }
     </div>
     <div id="historyList"></div>
   </section>
+
+  <!-- NUMBER GENERATOR VIEW -->
+  <section class="view" id="view-number">
+    <div class="bar"><h2>Random number</h2></div>
+    <div class="num-panel">
+      <div class="num-result" id="numResult">—</div>
+      <div class="num-range">
+        <label>Min<input class="text-input" id="numMin" type="number" inputmode="numeric" value="1"></label>
+        <label>Max<input class="text-input" id="numMax" type="number" inputmode="numeric" value="100"></label>
+      </div>
+      <button class="btn primary lg full" id="genNumBtn">🎲 Generate</button>
+    </div>
+  </section>
 </div>
 
 <!-- BOTTOM TABS -->
@@ -598,6 +615,7 @@ input { font-family: inherit; }
     <button class="tab" data-view="stats" role="tab" aria-selected="false"><span class="ic">📊</span>Stats</button>
     <button class="tab" data-view="history" role="tab" aria-selected="false"><span class="ic">📜</span>History</button>
     <button class="tab" id="pickerTab"><span class="ic">🎡</span>Picker</button>
+    <button class="tab" data-view="number" role="tab" aria-selected="false"><span class="ic">🔢</span>Number</button>
     <button class="tab" id="raceTab"><span class="ic">🚦</span>Race!</button>
   </div>
 </nav>
@@ -698,35 +716,16 @@ input { font-family: inherit; }
 <!-- PICKER STAGE -->
 <div class="picker-stage" id="pickerStage">
   <button class="icon-btn picker-close" id="pickerClose">✕</button>
-  <div class="seg" id="pickerModeSeg" style="width:100%;max-width:320px;margin-bottom:20px">
-    <button data-pmode="names" class="on">🎡 Names</button>
-    <button data-pmode="number">🔢 Number</button>
+  <h2 style="margin:0 0 18px;font-size:20px">🎡 Wheel of Names</h2>
+  <div class="wheel-wrap">
+    <div class="wheel-pointer"></div>
+    <canvas id="wheelCanvas" width="720" height="720"></canvas>
+    <div class="wheel-center">🎯</div>
   </div>
-
-  <div id="pickerNames" style="display:flex;flex-direction:column;align-items:center;width:100%">
-    <div class="wheel-wrap">
-      <div class="wheel-pointer"></div>
-      <canvas id="wheelCanvas" width="720" height="720"></canvas>
-      <div class="wheel-center">🎯</div>
-    </div>
-    <div class="picker-result" id="pickerResult"></div>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <button class="btn primary lg" id="spinBtn" style="width:200px">SPIN</button>
-      <button class="btn ghost lg" id="removeWinnerBtn" style="display:none">➖ Remove winner</button>
-    </div>
-  </div>
-
-  <div id="pickerNumber" style="display:none;width:100%;max-width:320px;text-align:center">
-    <div class="num-result" id="numResult">—</div>
-    <div style="display:flex;gap:12px;margin:18px 0">
-      <label style="flex:1;font-size:12px;font-weight:700;color:var(--muted)">Min
-        <input class="text-input" id="numMin" type="number" inputmode="numeric" value="1" style="margin-top:6px;text-align:center">
-      </label>
-      <label style="flex:1;font-size:12px;font-weight:700;color:var(--muted)">Max
-        <input class="text-input" id="numMax" type="number" inputmode="numeric" value="100" style="margin-top:6px;text-align:center">
-      </label>
-    </div>
-    <button class="btn primary lg full" id="genNumBtn">🎲 Generate</button>
+  <div class="picker-result" id="pickerResult"></div>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <button class="btn primary lg" id="spinBtn" style="width:200px">SPIN</button>
+    <button class="btn ghost lg" id="removeWinnerBtn" style="display:none">➖ Remove winner</button>
   </div>
 </div>
 
@@ -1739,17 +1738,9 @@ function openPicker() {
   $("#pickerStage").classList.add("open");
   $("#pickerResult").innerHTML = "";
   $("#removeWinnerBtn").style.display = "none";
-  setPickerMode("names");
   preloadWheelImgs().then(drawWheel);
 }
 $("#pickerClose").onclick = () => $("#pickerStage").classList.remove("open");
-
-function setPickerMode(mode) {
-  $$("#pickerModeSeg button").forEach(b => b.classList.toggle("on", b.dataset.pmode === mode));
-  $("#pickerNames").style.display = mode === "names" ? "flex" : "none";
-  $("#pickerNumber").style.display = mode === "number" ? "block" : "none";
-}
-$$("#pickerModeSeg button").forEach(b => b.onclick = () => setPickerMode(b.dataset.pmode));
 
 function preloadWheelImgs() {
   return Promise.all(pickerPool.map(r => new Promise(res => {
