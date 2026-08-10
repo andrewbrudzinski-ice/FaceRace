@@ -304,6 +304,13 @@ input { font-family: inherit; }
 }
 .race-stage.open { display: flex; }
 .race-bg { position: absolute; inset: 0; z-index: 0; transition: opacity .4s; }
+/* Scrolling scenery horizon band: passing hills + theme emoji, sells the sense of travel. */
+.race-scenery {
+  position: relative; z-index: 2; height: 60px; flex: none; overflow: hidden;
+  background-repeat: repeat-x; background-position: bottom left; background-size: auto 100%;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 55%);
+  mask-image: linear-gradient(180deg, transparent, #000 55%);
+}
 .race-top {
   position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between;
   padding: calc(var(--safe-top) + 12px) 16px 10px; gap: 12px;
@@ -328,7 +335,12 @@ input { font-family: inherit; }
 }
 .lane::before {
   content: ""; position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(90deg, transparent 0 38px, var(--lane-line) 38px 40px);
+  /* Two parallax ground layers that scroll left via --ground so the track appears
+     to rush under the runners during a race (static when --ground is unset). */
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 38px, var(--lane-line) 38px 40px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 5px, transparent 5px 26px);
+  background-position-x: var(--ground, 0px), calc(var(--ground, 0px) * 1.7);
 }
 .lane .finish {
   position: absolute; right: 6px; top: 0; bottom: 0; width: 12px;
@@ -524,6 +536,15 @@ input { font-family: inherit; }
 .site-blurb { margin-top: 26px; padding: 0 4px 6px; color: var(--muted); }
 .site-blurb h2 { font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 800; margin: 0 0 8px; }
 .site-blurb p { font-size: 12.5px; line-height: 1.6; font-weight: 600; margin: 0; }
+.contact-card { display: flex; gap: 14px; align-items: center; margin-top: 18px; padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+.contact-emoji { font-size: 34px; flex-shrink: 0; }
+.contact-body { flex: 1; min-width: 0; }
+.contact-body h3 { margin: 0 0 3px; font-size: 15px; font-weight: 800; color: var(--text); }
+.contact-body p { font-size: 12px; margin: 0 0 12px; }
+.contact-btns { display: flex; gap: 9px; flex-wrap: wrap; }
+.contact-btns .btn { flex: 1; min-width: 130px; text-decoration: none; }
+.site-foot { text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 18px; }
+.site-foot a { color: var(--accent-2); text-decoration: none; }
 
 /* ============ FOCUS / A11Y ============ */
 :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
@@ -616,6 +637,20 @@ input { font-family: inherit; }
     <footer class="site-blurb">
       <h2>The photo-finish party game</h2>
       <p>FaceRace is a free racing game you play with your friends' faces. Add 2–20 photos, pick a track theme and race length, and watch everyone sprint to a photo finish — with boosts, banana peels and a champions' leaderboard. There's also a wheel-of-names picker and a random number generator for quick decisions. No account, no download: it runs right in your browser and even works offline. Everything stays on your device — photos are never uploaded anywhere.</p>
+
+      <div class="contact-card">
+        <div class="contact-emoji">💌</div>
+        <div class="contact-body">
+          <h3>Get in touch</h3>
+          <p>Bug, idea, or just want to say hi? We read every message.</p>
+          <div class="contact-btns">
+            <a class="btn teal" id="emailLink" href="mailto:faceracegame@gmail.com?subject=Hello%20FaceRace">✉️ Email us</a>
+            <button class="btn ghost" id="feedbackBtn">💬 Send a message</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-foot">FaceRace · faceraces.com · <a href="mailto:faceracegame@gmail.com">faceracegame@gmail.com</a></div>
     </footer>
   </section>
 
@@ -739,6 +774,7 @@ input { font-family: inherit; }
     <div class="timer" id="raceTimer">0.0</div>
     <button class="race-close" id="raceClose">✕</button>
   </div>
+  <div class="race-scenery" id="raceScenery" aria-hidden="true"></div>
   <div class="track-wrap" id="trackWrap"></div>
   <div class="event-banner" id="eventBanner"></div>
   <div class="countdown" id="countdown"><div class="cd-num" id="cdNum">3</div></div>
@@ -768,6 +804,19 @@ input { font-family: inherit; }
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
     <button class="btn primary lg" id="spinBtn" style="width:200px">SPIN</button>
     <button class="btn ghost lg" id="removeWinnerBtn" style="display:none">➖ Remove winner</button>
+  </div>
+</div>
+
+<!-- FEEDBACK / CONTACT MODAL -->
+<div class="modal-bg" id="feedbackModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle">
+    <h3 id="fbTitle">Send us a message</h3>
+    <p class="dlg-msg">Tell us what you love, what's broken, or what you'd like to see next. This opens your email app with the message ready to send to faceracegame@gmail.com.</p>
+    <textarea class="text-input" id="fbText" rows="5" placeholder="Your message…" style="resize:vertical;min-height:120px;line-height:1.5"></textarea>
+    <div class="modal-actions">
+      <button class="btn ghost full" id="fbCancel">Cancel</button>
+      <button class="btn primary full" id="fbSend">✉️ Open email</button>
+    </div>
   </div>
 </div>
 
@@ -920,6 +969,27 @@ $("#themeBtn").onclick = () => {
 $("#helpBtn").onclick = () => { $("#helpModal").classList.add("open"); beep(560, .05); };
 $("#helpClose").onclick = () => $("#helpModal").classList.remove("open");
 $("#helpModal").onclick = e => { if (e.target === $("#helpModal")) $("#helpModal").classList.remove("open"); };
+
+/* ===================== CONTACT / FEEDBACK ===================== */
+const CONTACT_EMAIL = "faceracegame@gmail.com";
+const closeFeedback = () => $("#feedbackModal").classList.remove("open");
+$("#emailLink").onclick = () => track("contact_open", { via: "email" });
+$("#feedbackBtn").onclick = () => {
+  $("#fbText").value = "";
+  $("#feedbackModal").classList.add("open");
+  track("contact_open", { via: "message" });
+  setTimeout(() => $("#fbText").focus(), 150);
+};
+$("#fbCancel").onclick = closeFeedback;
+$("#feedbackModal").onclick = e => { if (e.target === $("#feedbackModal")) closeFeedback(); };
+$("#fbSend").onclick = () => {
+  const body = $("#fbText").value.trim();
+  const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("FaceRace message")}&body=${encodeURIComponent(body)}`;
+  location.href = href;
+  closeFeedback();
+  track("contact_send", { via: "message" });
+  toast("Opening your email app…");
+};
 
 /* ===================== RENDER RACERS ===================== */
 function renderRacers() {
@@ -1344,13 +1414,29 @@ function launchConfetti(duration = 3500) {
 
 /* ===================== RACE THEMES ===================== */
 const THEMES = {
-  track:    { grad: "linear-gradient(180deg,#d94f3a,#a83422)", lane: "#c0492f", line: "rgba(255,255,255,.18)", emoji: "🏟" },
-  beach:    { grad: "linear-gradient(180deg,#36c5e0,#f5d99b 70%)", lane: "#e8c878", line: "rgba(255,255,255,.3)", emoji: "🏖" },
-  space:    { grad: "linear-gradient(180deg,#0a0a2e,#1a0a3e)", lane: "#241a4a", line: "rgba(160,140,255,.2)", emoji: "🚀", stars: true },
-  football: { grad: "linear-gradient(180deg,#2e8b3d,#216b2c)", lane: "#2c7e38", line: "rgba(255,255,255,.35)", emoji: "🏈" },
-  golf:     { grad: "linear-gradient(180deg,#7ec850,#4f9e2f)", lane: "#5fae37", line: "rgba(255,255,255,.2)", emoji: "⛳" },
-  casino:   { grad: "linear-gradient(180deg,#1a0e2e,#3a1030)", lane: "#2e1440", line: "rgba(255,210,63,.25)", emoji: "🎰" }
+  track:    { grad: "linear-gradient(180deg,#d94f3a,#a83422)", lane: "#c0492f", line: "rgba(255,255,255,.18)", emoji: "🏟", scenery: { hill: "#8f2e1f", emojis: ["🏟️", "🚩", "📣", "🏆"] } },
+  beach:    { grad: "linear-gradient(180deg,#36c5e0,#f5d99b 70%)", lane: "#e8c878", line: "rgba(255,255,255,.3)", emoji: "🏖", scenery: { hill: "#cfa457", emojis: ["🌴", "⛱️", "🐚", "🌊"] } },
+  space:    { grad: "linear-gradient(180deg,#0a0a2e,#1a0a3e)", lane: "#241a4a", line: "rgba(160,140,255,.2)", emoji: "🚀", stars: true, scenery: { hill: "#2a1e52", emojis: ["🪐", "🛸", "⭐", "☄️"] } },
+  football: { grad: "linear-gradient(180deg,#2e8b3d,#216b2c)", lane: "#2c7e38", line: "rgba(255,255,255,.35)", emoji: "🏈", scenery: { hill: "#1d5c27", emojis: ["🥅", "📣", "🏈", "🎽"] } },
+  golf:     { grad: "linear-gradient(180deg,#7ec850,#4f9e2f)", lane: "#5fae37", line: "rgba(255,255,255,.2)", emoji: "⛳", scenery: { hill: "#3f7d25", emojis: ["⛳", "🌳", "🌲", "🏌️"] } },
+  casino:   { grad: "linear-gradient(180deg,#1a0e2e,#3a1030)", lane: "#2e1440", line: "rgba(255,210,63,.25)", emoji: "🎰", scenery: { hill: "#3a1440", emojis: ["🎰", "💎", "🍒", "🎲"] } }
 };
+/* Seamless scrolling scenery tile: two rounded hills with theme emoji sitting on them. */
+function sceneryTile(sc) {
+  const s = sc || { hill: "#444", emojis: ["🏁", "⭐", "🎈", "✨"] };
+  const e = s.emojis;
+  const W = 520, H = 200;
+  const path = `M0,${H} C70,96 190,96 260,${H} C330,96 450,96 520,${H} Z`;
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' viewBox='0 0 ${W} ${H}'>` +
+    `<path d='${path}' fill='${s.hill}' fill-opacity='0.6'/>` +
+    `<text x='130' y='116' font-size='44' text-anchor='middle' opacity='0.9'>${e[0]}</text>` +
+    `<text x='390' y='116' font-size='44' text-anchor='middle' opacity='0.9'>${e[1]}</text>` +
+    `<text x='260' y='70' font-size='30' text-anchor='middle' opacity='0.7'>${e[2]}</text>` +
+    `<text x='40' y='60' font-size='26' text-anchor='middle' opacity='0.6'>${e[3]}</text>` +
+    `</svg>`;
+  return "url(\"data:image/svg+xml," + encodeURIComponent(svg) + "\")";
+}
 const EVENTS = [
   { txt: "🚀 Rocket boost!", spd: 2.2, dur: 1.4, kind: "boost" },
   { txt: "🍌 Slipped on a banana!", spd: 0.35, dur: 1.4, kind: "slow" },
@@ -1390,13 +1476,18 @@ function startRace() {
   if (settings.bg) { bg.style.background = `url(${settings.bg}) center/cover no-repeat`; }
   else { bg.style.background = theme.grad; }
   document.querySelector('meta[name=theme-color]').setAttribute("content", "#0b0e1a");
+  // scrolling scenery horizon
+  const scenery = $("#raceScenery");
+  scenery.style.backgroundImage = sceneryTile(theme.scenery);
+  scenery.style.backgroundPositionX = "0px";
+  const trackWrap = $("#trackWrap");
+  trackWrap.style.setProperty("--ground", "0px");
 
   // build runners — each assigned a randomized target finish ORDER (equal chance)
   const order = [...racers.keys()];
   for (let i = order.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [order[i], order[j]] = [order[j], order[i]]; }
   // order[k] = index into racers that finishes in place k (0 = winner)
 
-  const trackWrap = $("#trackWrap");
   trackWrap.innerHTML = "";
   const runners = racers.map((r, i) => {
     const lane = document.createElement("div");
@@ -1429,7 +1520,8 @@ function startRace() {
     run.finishAt = dur * (0.86 + (place / Math.max(1, racers.length - 1)) * 0.12);
   });
 
-  raceData = { runners, theme, dur, startTs: 0, elapsed: 0, lastTs: 0, running: false, results: [], laneW: 0 };
+  raceData = { runners, theme, dur, startTs: 0, elapsed: 0, lastTs: 0, running: false, results: [], laneW: 0,
+    trackWrap, scenery, reduceMotion: matchMedia("(prefers-reduced-motion: reduce)").matches };
 
   stage.classList.add("open");
   $("#finishScreen").classList.remove("show");
@@ -1487,6 +1579,12 @@ function raceFrame(now) {
   if (dt > 0.05) dt = 0.05;
   rd.elapsed = elapsed;
   $("#raceTimer").textContent = elapsed.toFixed(1);
+
+  // Scroll the world: ground rushes under the runners, scenery drifts by in parallax.
+  if (!rd.reduceMotion) {
+    rd.trackWrap.style.setProperty("--ground", `${-elapsed * 230}px`);
+    rd.scenery.style.backgroundPositionX = `${-elapsed * 86}px`;
+  }
 
   // Random events only fire while the field is still a pack — never during the
   // final convergence, so they add drama without ever changing who wins.
@@ -1881,6 +1979,7 @@ $("#genNumBtn").onclick = () => {
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape" || $("#dlgModal").classList.contains("open")) return;
   if ($("#editModal").classList.contains("open")) closeEdit();
+  else if ($("#feedbackModal").classList.contains("open")) closeFeedback();
   else if ($("#helpModal").classList.contains("open")) $("#helpModal").classList.remove("open");
 });
 

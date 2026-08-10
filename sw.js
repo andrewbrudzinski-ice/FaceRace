@@ -1,6 +1,6 @@
 /* FaceRace service worker — offline support + installability.
    Bump CACHE_VERSION whenever site files change so clients pick up the new build. */
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const CACHE_NAME = `facerace-${CACHE_VERSION}`;
 const PRECACHE = [
   "./",
