@@ -568,6 +568,7 @@ input { font-family: inherit; }
       </div>
     </div>
     <div class="head-actions">
+      <button class="icon-btn" id="inviteBtn" aria-label="Invite friends">📨</button>
       <button class="icon-btn" id="helpBtn" aria-label="How to play">❓</button>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">🌙</button>
     </div>
@@ -786,6 +787,7 @@ input { font-family: inherit; }
     <div class="finish-actions">
       <button class="btn primary lg full" id="rematchBtn">🔁 Rematch</button>
       <button class="btn teal lg full" id="shareBtn">📸 Share result</button>
+      <button class="btn ghost lg full" id="challengeBtn">🔗 Challenge a friend</button>
       <button class="btn ghost lg full" id="finishClose">Back to setup</button>
     </div>
   </div>
@@ -991,6 +993,65 @@ $("#fbSend").onclick = () => {
   toast("Opening your email app…");
 };
 
+/* ===================== CHALLENGE / INVITE LINKS =====================
+   Share a link that pre-loads your roster (names + emoji only — photos never
+   leave the device). Opening it offers to load those racers, so every race
+   can turn into an invite that brings a friend to the site. */
+function b64urlEncode(str) { return btoa(unescape(encodeURIComponent(str))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function b64urlDecode(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); return decodeURIComponent(escape(atob(s))); }
+const cleanEmoji = e => {
+  const s = String(e || "").replace(/[<>&"'`]/g, "").trim().slice(0, 8);
+  return (!s || /[A-Za-z0-9]/.test(s)) ? randomEmoji() : s; // reject anything that isn't emoji-like
+};
+
+function challengeUrl(roster) {
+  const data = (roster || racers).slice(0, 20).map(r => ({ n: String(r.name || "").slice(0, 22), e: r.emoji || "" }));
+  const base = location.protocol.startsWith("http") ? location.origin + location.pathname : "https://faceraces.com/";
+  return base + "?c=" + b64urlEncode(JSON.stringify(data));
+}
+
+async function shareChallenge(roster, ctx) {
+  if ((roster || racers).length < 2) { toast("Add at least 2 racers to invite friends."); return; }
+  const url = challengeUrl(roster);
+  track("challenge_share", { racers: (roster || racers).length, from: ctx || "setup" });
+  const shareData = { title: "FaceRace", text: "I set up a FaceRace 🏁 Can your face win?", url };
+  if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+    try { await navigator.share(shareData); return; } catch { /* cancelled — fall through to copy */ }
+  }
+  try { await navigator.clipboard.writeText(url); toast("Challenge link copied — paste it to a friend!"); }
+  catch { await uiAlert(url, "Copy this challenge link"); }
+}
+
+$("#inviteBtn").onclick = () => shareChallenge(null, "header");
+
+/* If the page was opened from a challenge link, offer to load that roster. */
+async function offerChallengeFromUrl() {
+  const code = new URLSearchParams(location.search).get("c");
+  if (!code) return;
+  // strip the param immediately so a refresh or share doesn't re-trigger
+  try { history.replaceState(null, "", location.pathname); } catch {}
+  let roster;
+  try { roster = JSON.parse(b64urlDecode(code)); } catch { return; }
+  if (!Array.isArray(roster) || roster.length < 2) return;
+  roster = roster.slice(0, 20).map(r => ({ name: String(r && r.n || "Racer").slice(0, 22) || "Racer", emoji: cleanEmoji(r && r.e) }));
+
+  const names = roster.slice(0, 3).map(r => r.name).join(", ") + (roster.length > 3 ? "…" : "");
+  const buttons = [{ label: "Load & race", value: "replace", variant: "primary" }];
+  if (racers.length) buttons.push({ label: "Add to my racers", value: "append", variant: "teal" });
+  buttons.push({ label: "Not now", value: null, variant: "ghost" });
+  const choice = await dialog({
+    title: "🏁 You've been challenged!",
+    message: `A friend lined up ${roster.length} racers (${names}). Load them?`,
+    cancelValue: null, buttons
+  });
+  if (!choice) return;
+  const fresh = roster.map(r => ({ id: uid(), name: r.name, img: null, emoji: r.emoji, wins: 0, podiums: 0, races: 0 }));
+  racers = choice === "append" ? [...racers, ...fresh].slice(0, 20) : fresh;
+  saveRacers(); renderRacers();
+  track("challenge_accepted", { racers: fresh.length, mode: choice });
+  toast("Racers loaded — hit Race! 🏁");
+}
+
 /* ===================== RENDER RACERS ===================== */
 function renderRacers() {
   const grid = $("#racerGrid");
@@ -1011,7 +1072,7 @@ function renderRacers() {
     card.dataset.id = r.id;
     const avatar = r.img
       ? `<img class="avatar" src="${r.img}" alt="${escapeHtml(r.name)}">`
-      : `<div class="avatar ph">${r.emoji || "🏃"}</div>`;
+      : `<div class="avatar ph">${escapeHtml(r.emoji || "🏃")}</div>`;
     const rec = r.races > 0 ? `${r.wins}W · ${r.podiums}🏅` : "New";
     card.innerHTML = `
       <button class="x" data-del="${r.id}" aria-label="Remove ${escapeHtml(r.name)}">×</button>
@@ -1224,7 +1285,7 @@ function renderPresets() {
   $("#presetCount").textContent = presets.length;
   list.innerHTML = presets.map(p => {
     const thumbs = p.racers.slice(0, 4).map(r =>
-      r.img ? `<img src="${r.img}" alt="">` : `<div class="ph">${r.emoji || ""}</div>`
+      r.img ? `<img src="${r.img}" alt="">` : `<div class="ph">${escapeHtml(r.emoji || "")}</div>`
     ).join("");
     const more = p.racers.length > 4 ? `<div class="more">+${p.racers.length - 4}</div>` : "";
     return `<div class="preset-row" data-id="${p.id}">
@@ -1742,6 +1803,7 @@ function showFinish(results) {
 }
 
 $("#rematchBtn").onclick = () => { track("rematch"); $("#raceStage").classList.remove("open"); setTimeout(startRace, 120); };
+$("#challengeBtn").onclick = () => shareChallenge(null, "finish");
 $("#finishClose").onclick = closeRace;
 $("#raceClose").onclick = closeRace;
 function closeRace() {
@@ -1990,6 +2052,7 @@ function init() {
   initSettings();
   renderRacers();
   renderPresets();
+  offerChallengeFromUrl();
   // unlock audio on first touch
   document.body.addEventListener("touchstart", () => ac(), { once: true });
   document.body.addEventListener("click", () => ac(), { once: true });
