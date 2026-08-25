@@ -1894,7 +1894,11 @@ function updateSim(dt){
     run.smVel+=(run.vel-run.smVel)*clamp(dts*6,0,1);
     // personality integration
     run.hopV-=dts*60; run.hop+=run.hopV*dts; if(run.hop<0){run.hop=0;run.hopV=0;}
-    run.spin+=run.spinV*dts; run.spinV*=Math.pow(0.02,dts); if(Math.abs(run.spinV)<0.05)run.spinV=0;
+    // "spin" is a damped SPRING wobble around upright — a reaction shake that
+    // always snaps back, clamped so a face can never tip past a small angle
+    // (photos must stay recognizable — never upside down).
+    { const acc=-150*run.spin-16*run.spinV; run.spinV+=acc*dts; run.spin+=run.spinV*dts;
+      run.spin=clamp(run.spin,-0.42,0.42); if(Math.abs(run.spin)<0.002&&Math.abs(run.spinV)<0.02){run.spin=0;run.spinV=0;} }
     run.evTint=Math.max(0,run.evTint-dts*1.4);
     run.rankFlash=Math.max(0,run.rankFlash-dts*2);
     if(run.celebrate>0)run.celebrate-=dts;
@@ -1941,7 +1945,7 @@ function updateSim(dt){
 
 function onCross(run){
   if(rd.firstCrossIdx<0){rd.firstCrossIdx=run.idx; run.celebrate=3; sfxFinishLine(); crowdCheer();}
-  run.spinV+=8; run.hopV=Math.max(run.hopV,34);
+  run.spinV+=(Math.random()<.5?-1:1)*2.6; run.hopV=Math.max(run.hopV,40);
   burstFinish(run);
 }
 
@@ -2174,7 +2178,7 @@ function fireEvent(ev){
     const run=rd.runners[tg.i]; if(!run||run.crossed)return;
     run.evTint=1; run.evKind=ev.kind;
     if(tg.sign>0){run.hopV=Math.max(run.hopV, ev.kind==="shortcut"?42:30);}
-    if(ev.spin){run.spinV+=(Math.random()<.5?-1:1)*(ev.kind==="shortcut"?7:5);}
+    if(ev.spin){run.spinV+=(Math.random()<.5?-1:1)*(ev.kind==="shortcut"?2.8:2.2);}
     // particles at racer
     const {sx,sy}=racerScreen(run);
     if(th.eventParticles)th.eventParticles(ev.kind,sx,sy,tg.sign,rd);
