@@ -1482,21 +1482,42 @@ function ac() {
   if (audioCtx.state === "suspended") audioCtx.resume();
   return audioCtx;
 }
-function beep(freq, dur, type = "sine", vol = 0.12) {
+/* A single musical tone with a soft attack (no click) and smooth decay.
+   Optional glideTo bends the pitch over the note for zaps/drops. */
+function beep(freq, dur, type = "sine", vol = 0.12, glideTo) {
   const ctx = ac(); if (!ctx) return;
   const o = ctx.createOscillator(), g = ctx.createGain();
-  o.type = type; o.frequency.value = freq;
-  g.gain.setValueAtTime(vol, ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+  o.type = type; o.frequency.setValueAtTime(freq, ctx.currentTime);
+  if (glideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, glideTo), ctx.currentTime + dur);
+  const t = ctx.currentTime;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + Math.min(0.02, dur * 0.3)); // gentle attack
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   o.connect(g); g.connect(ctx.destination);
-  o.start(); o.stop(ctx.currentTime + dur);
+  o.start(t); o.stop(t + dur + 0.02);
+}
+/* Filtered white noise — used for whooshes and crowd cheers so they sound
+   airy rather than like a buzzing oscillator. */
+function noiseBurst(dur, vol, freq, type = "bandpass", rise) {
+  const ctx = ac(); if (!ctx) return;
+  const n = Math.max(1, Math.floor(ctx.sampleRate * dur));
+  const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+  const src = ctx.createBufferSource(); src.buffer = buf;
+  const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = 0.7;
+  const g = ctx.createGain(); const t = ctx.currentTime;
+  if (rise) { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + dur * 0.6); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); }
+  else { g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); }
+  src.connect(f); f.connect(g); g.connect(ctx.destination);
+  src.start(t); src.stop(t + dur);
 }
 function fanfare() {
   const ctx = ac(); if (!ctx) return;
   const notes = [523, 659, 784, 1047, 784, 1047, 1319];
-  notes.forEach((n, i) => setTimeout(() => beep(n, 0.32, "triangle", 0.14), i * 130));
+  notes.forEach((n, i) => setTimeout(() => beep(n, 0.32, "triangle", 0.13), i * 130));
 }
-function crowdWhoosh() { beep(180, 0.4, "sawtooth", 0.05); }
+function crowdWhoosh() { noiseBurst(0.5, 0.05, 700, "bandpass", true); }
 
 /* ===================== CONFETTI ===================== */
 const confettiCanvas = $("#confetti");
@@ -2825,43 +2846,58 @@ const THEME_ORDER=["street","football","space","ocean","volcano","haunted","aren
 /* =====================================================================
    THEME-FLAVORED AUDIO  (WebAudio synth — no assets, respects toggle)
    ===================================================================== */
+/* Ambience is a soft, low-volume SINE pad (root + a fifth) through a lowpass,
+   with a slow tremolo so it gently breathes instead of buzzing. Sine-only +
+   lowpass means there are no harsh harmonics — it sits warmly under the sfx. */
 let ambienceNodes=null;
 function audioStartTheme(theme){
   audioStopTheme();
   const ctx=ac(); if(!ctx||!theme.audio)return;
   try{
-    const g=ctx.createGain(); g.gain.value=0; g.connect(ctx.destination);
-    g.gain.setTargetAtTime(0.05,ctx.currentTime,1.2);
-    const o1=ctx.createOscillator(); o1.type=theme.audio.type||"sine"; o1.frequency.value=theme.audio.root;
-    const o2=ctx.createOscillator(); o2.type="sine"; o2.frequency.value=theme.audio.root*1.5;
-    const lfo=ctx.createOscillator(); const lg=ctx.createGain(); lfo.frequency.value=0.15; lg.gain.value=6;
-    lfo.connect(lg); lg.connect(o1.frequency);
-    o1.connect(g); o2.connect(g); o1.start(); o2.start(); lfo.start();
-    ambienceNodes={g,o1,o2,lfo};
+    const t=ctx.currentTime;
+    const master=ctx.createGain(); master.gain.value=0.0001; master.connect(ctx.destination);
+    master.gain.exponentialRampToValueAtTime(0.05, t+2.0);           // quiet, slow fade-in
+    const lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=520; lp.Q.value=0.3; lp.connect(master);
+    const root=theme.audio.root;
+    const o1=ctx.createOscillator(); o1.type="sine"; o1.frequency.value=root/2;      // low root
+    const o2=ctx.createOscillator(); o2.type="sine"; o2.frequency.value=root*0.75;    // a fifth below root
+    const g1=ctx.createGain(); g1.gain.value=0.6; const g2=ctx.createGain(); g2.gain.value=0.45;
+    o1.connect(g1); g1.connect(lp); o2.connect(g2); g2.connect(lp);
+    // slow tremolo on the master so the pad swells and recedes
+    const trem=ctx.createOscillator(); trem.type="sine"; trem.frequency.value=0.12;
+    const tg=ctx.createGain(); tg.gain.value=0.018; trem.connect(tg); tg.connect(master.gain); // small depth around the 0.05 base
+    o1.start(t); o2.start(t); trem.start(t);
+    ambienceNodes={master,o1,o2,trem};
   }catch{}
 }
 function audioStopTheme(){
   if(!ambienceNodes)return; const ctx=audioCtx;
-  try{ if(ctx)ambienceNodes.g.gain.setTargetAtTime(0,ctx.currentTime,0.3);
-    const n=ambienceNodes; setTimeout(()=>{try{n.o1.stop();n.o2.stop();n.lfo.stop();}catch{}},600);
+  try{ if(ctx)ambienceNodes.master.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.4);
+    const n=ambienceNodes; setTimeout(()=>{try{n.o1.stop();n.o2.stop();n.trem.stop();}catch{}},600);
   }catch{}
   ambienceNodes=null;
 }
+/* A melodic note in the active theme's key/scale — always a soft triangle so
+   themes stay musically distinct (different root/scale) without harshness. */
 function themeNote(deg,oct,dur,vol){ const th=rd&&rd.theme&&rd.theme.audio; if(!th)return;
   const scale=th.scale, i=((deg%scale.length)+scale.length)%scale.length;
-  const semis=scale[i]+12*(oct||0); beep(th.root*Math.pow(2,semis/12), dur||0.12, th.type||"sine", vol||0.09);
+  const semis=scale[i]+12*(oct||0); beep(th.root*Math.pow(2,semis/12), dur||0.14, "triangle", vol||0.08);
 }
-function sfxCountdown(i){ beep(440+i*90,0.16,"square",0.12); }
-function sfxGo(){ beep(880,0.28,"square",0.16); crowdWhoosh(); }
+function sfxCountdown(i){ beep(392+i*98,0.15,"triangle",0.11); }               // gentle ascending G-A-B
+function sfxGo(){ beep(784,0.22,"triangle",0.13); setTimeout(()=>beep(1175,0.28,"triangle",0.12),60); crowdWhoosh(); }
 function sfxEvent(kind){
-  if(kind==="boost"||kind==="shortcut"||kind==="comeback"){themeNote(2,1,0.12,0.1);setTimeout(()=>themeNote(4,1,0.14,0.1),70);}
-  else if(kind==="slip"||kind==="collision"||kind==="hazard"){beep(200,0.22,"sawtooth",0.1);}
-  else {themeNote(0,0,0.1,0.09);setTimeout(()=>themeNote(3,0,0.1,0.09),60);setTimeout(()=>themeNote(1,1,0.12,0.09),120);}
+  if(kind==="boost"||kind==="shortcut"||kind==="comeback"){ // bright rising two-note "power up"
+    themeNote(2,1,0.12,0.09); setTimeout(()=>themeNote(4,1,0.16,0.09),80);
+  } else if(kind==="slip"||kind==="collision"||kind==="hazard"){ // soft descending "uh-oh" (no buzz)
+    beep(360,0.22,"triangle",0.09,190); noiseBurst(0.12,0.03,300,"lowpass");
+  } else { // chaos — quick playful arpeggio
+    themeNote(0,0,0.1,0.08); setTimeout(()=>themeNote(3,0,0.1,0.08),70); setTimeout(()=>themeNote(5,1,0.14,0.08),140);
+  }
 }
 let lastOvertake=0;
-function sfxOvertake(){ const t=nowMs(); if(t-lastOvertake<180)return; lastOvertake=t; beep(660,0.05,"triangle",0.06); }
-function sfxFinishLine(){ beep(1046,0.2,"triangle",0.14); }
-function crowdCheer(){ beep(140,0.6,"sawtooth",0.05); }
+function sfxOvertake(){ const t=nowMs(); if(t-lastOvertake<200)return; lastOvertake=t; beep(720,0.05,"sine",0.045); }
+function sfxFinishLine(){ beep(1046,0.18,"triangle",0.12); setTimeout(()=>beep(1568,0.2,"triangle",0.1),90); }
+function crowdCheer(){ noiseBurst(0.7,0.045,1100,"highpass",true); }
 
 /* =====================================================================
    FINISH SCREEN
